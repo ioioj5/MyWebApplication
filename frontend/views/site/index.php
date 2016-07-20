@@ -3,13 +3,14 @@
 /* @var $this yii\web\View */
 use yii\helpers\Html;
 
+
 $this->title = 'Index';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="site-index">
-	<h1><?= Html::encode($this->title) ?></h1>
+    <h1><?= Html::encode($this->title) ?></h1>
 
-	<p>This is the About page. You may modify the following file to customize its content:</p>
+    <p>This is the About page. You may modify the following file to customize its content:</p>
 
-	<code><?= __FILE__ ?></code>
+    <code><?= __FILE__ ?></code>
 </div>

@@ -8,6 +8,7 @@ return [
             'username' => 'root',
             'password' => '123456',
             'charset' => 'utf8',
+            'tablePrefix'=>'tbl_'
         ],
         'cache' => [
             'class' => 'yii\caching\FileCache',
