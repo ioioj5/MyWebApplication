@@ -1,6 +1,7 @@
 <?php
 namespace common\models;
 
+use common\lib\Bcrypt;
 use Yii;
 use yii\base\Model;
 
@@ -13,7 +14,6 @@ class LoginForm extends Model {
 	public $rememberMe = true;
 
 	private $_user;
-
 
 	/**
 	 * @inheritdoc

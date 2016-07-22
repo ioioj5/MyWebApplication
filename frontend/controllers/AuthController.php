@@ -1,6 +1,7 @@
 <?php
 namespace frontend\controllers;
 use common\models\LoginForm;
+use common\models\SignupForm;
 use Yii;
 use yii\web\Controller;
 
@@ -25,7 +26,20 @@ class AuthController extends Controller {
 	/**
 	 * 注册
 	 **/
-	public function actionSignUp(){}
+	public function actionSignUp(){
+		$model = new SignupForm ();
+		if ( $model->load ( Yii::$app->request->post () ) ) {
+			if ( $user = $model->signup () ) {
+				if ( Yii::$app->getUser ()->login ( $user ) ) {
+					return $this->goHome ();
+				}
+			}
+		}
+
+		return $this->render ( 'sign-up', [
+			'model' => $model
+		] );
+	}
 
 	/**
 	 * 登出
