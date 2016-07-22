@@ -57,19 +57,19 @@ AppAsset::register ( $this );
 		$menuItems [] = [
 			'label' => 'Signup',
 			'url'   => [
-				'/site/signup'
+				'/auth/sign-up'
 			]
 		];
 		$menuItems [] = [
-			'label' => 'Login',
+			'label' => 'Signin',
 			'url'   => [
-				'/site/login'
+				'/auth/sign-in'
 			]
 		];
 	} else {
 		$menuItems [] = '<li>' . Html::beginForm ( [
-				'/site/logout'
-			], 'post' ) . Html::submitButton ( 'Logout (' . Yii::$app->user->identity->username . ')', [
+				'/auth/logout'
+			], 'post' ) . Html::submitButton ( 'Logout (' . Yii::$app->user->identity->email . ')', [
 				'class' => 'btn btn-link'
 			] ) . Html::endForm () . '</li>';
 	}
