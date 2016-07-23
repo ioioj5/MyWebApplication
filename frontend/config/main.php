@@ -34,12 +34,6 @@ return [
 		'errorHandler' => [
 			'errorAction' => 'site/error'
 		],
-		'urlManager'   => [
-			'scriptUrl'       => '/admini/index.php',
-			'enablePrettyUrl' => true,
-			'showScriptName'  => false,
-			'rules'           => [ ]
-		]
 	]
 	// 'index' => 'site/index',
 
