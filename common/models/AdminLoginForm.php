@@ -1,7 +1,6 @@
 <?php
 namespace common\models;
 
-use common\lib\Bcrypt;
 use Yii;
 use yii\base\Model;
 
@@ -40,7 +39,7 @@ class AdminLoginForm extends Model {
 		if ( ! $this->hasErrors () ) {
 			$user = $this->getUser ();
 			if ( ! $user || ! $user->validatePassword ( $this->password ) ) {
-				$this->addError ( $attribute, 'Incorrect email or password.' );
+				$this->addError ( $attribute, 'Incorrect username or password.' );
 			}
 		}
 	}
@@ -52,7 +51,7 @@ class AdminLoginForm extends Model {
 	 */
 	public function login () {
 		if ( $this->validate () ) {
-			return Yii::$app->admin->login ( $this->getUser (), $this->rememberMe ? 3600 * 24 * 30 : 0 );
+			return Yii::$app->user->login ( $this->getUser (), $this->rememberMe ? 3600 * 24 * 30 : 0 );
 		} else {
 			return false;
 		}
@@ -65,7 +64,7 @@ class AdminLoginForm extends Model {
 	 */
 	protected function getUser () {
 		if ( $this->_admin === null ) {
-			$this->_admin = Admin::findByUsername ( $this->username );
+			$this->_admin = Admin::findByUserName ( $this->username );
 		}
 
 		return $this->_admin;

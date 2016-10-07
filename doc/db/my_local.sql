@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: 2016-09-29 02:13:48
+-- Generation Time: 2016-10-07 20:24:53
 -- 服务器版本： 5.6.30
 -- PHP Version: 5.5.37
 
@@ -23,15 +23,49 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
+-- 表的结构 `tbl_admin`
+--
+
+CREATE TABLE `tbl_admin` (
+  `id` int(11) NOT NULL,
+  `username` varchar(20) NOT NULL COMMENT '用户名',
+  `email` varchar(50) NOT NULL COMMENT '登入邮箱',
+  `password` char(64) NOT NULL COMMENT '密码',
+  `token` char(64) NOT NULL,
+  `addtime` int(10) NOT NULL COMMENT '注册时间',
+  `status` tinyint(1) NOT NULL DEFAULT '1' COMMENT '用户状态(1-正常,0-关闭)'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='用户表';
+
+--
+-- 转存表中的数据 `tbl_admin`
+--
+
+INSERT INTO `tbl_admin` (`id`, `username`, `email`, `password`, `token`, `addtime`, `status`) VALUES
+(1, 'admin', 'peng_du2007@qq.com', '$2a$15$C81gSdUkgmzt4Y23hVucjOeI66S8zOq21PIzaCfcchgoSfG51TxNe', 'RmFldUtWc0sMKndv-zgfbjFdFl-0_gZq', 1469202625, 1);
+
+-- --------------------------------------------------------
+
+--
 -- 表的结构 `tbl_goods`
 --
 
 CREATE TABLE `tbl_goods` (
   `id` int(11) NOT NULL,
   `name` varchar(50) NOT NULL COMMENT '商品名称',
-  `price` decimal(5,0) NOT NULL COMMENT '商品价格',
-  `postTime` int(10) NOT NULL COMMENT '添加时间'
+  `price` decimal(10,2) NOT NULL DEFAULT '0.00' COMMENT '商品价格',
+  `postTime` int(10) NOT NULL COMMENT '添加时间',
+  `status` tinyint(1) NOT NULL DEFAULT '0' COMMENT '0-不可用, 1- 上架， 2-下架'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='商品表';
+
+--
+-- 转存表中的数据 `tbl_goods`
+--
+
+INSERT INTO `tbl_goods` (`id`, `name`, `price`, `postTime`, `status`) VALUES
+(4, '第二件商品', '2.00', 1475838555, 0),
+(6, '第三件商品', '1.00', 1475838563, 0),
+(7, '第四件商品', '1.00', 1475838569, 0),
+(8, '第五件商品', '1.10', 1475839627, 0);
 
 -- --------------------------------------------------------
 
@@ -122,6 +156,12 @@ CREATE TABLE `tbl_user_address` (
 --
 
 --
+-- Indexes for table `tbl_admin`
+--
+ALTER TABLE `tbl_admin`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `tbl_goods`
 --
 ALTER TABLE `tbl_goods`
@@ -162,10 +202,15 @@ ALTER TABLE `tbl_user_address`
 --
 
 --
+-- 使用表AUTO_INCREMENT `tbl_admin`
+--
+ALTER TABLE `tbl_admin`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+--
 -- 使用表AUTO_INCREMENT `tbl_goods`
 --
 ALTER TABLE `tbl_goods`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 --
 -- 使用表AUTO_INCREMENT `tbl_order`
 --

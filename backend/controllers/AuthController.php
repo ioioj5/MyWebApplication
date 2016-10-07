@@ -5,17 +5,14 @@ use Yii;
 use yii\web\Controller;
 
 class AuthController extends Controller {
+	public $layout = 'login';
 	/**
 	 * 登入
 	 */
 	public function actionSignIn(){
-		if (!\Yii::$app->admin->isGuest) {
-			return $this->goHome();
-		}
-
 		$model = new AdminLoginForm();
 		if ($model->load(Yii::$app->request->post()) && $model->login()) {
-			return $this->goBack();
+			$this->redirect(['site/index']);
 		} else {
 			return $this->render('sign-in', [
 				'model' => $model,
@@ -23,7 +20,12 @@ class AuthController extends Controller {
 		}
 	}
 
-	public function actionSignUp(){
+	/**
+	 * 登出
+	 */
+	public function actionSignOut(){
+		Yii::$app->user->logout ();
 
+		$this->redirect(['auth/sign-in']);
 	}
 }
