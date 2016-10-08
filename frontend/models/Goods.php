@@ -21,4 +21,15 @@ class Goods extends \common\models\Goods {
 
 		return ['fields'=>$fields, 'count'=>$count];
 	}
+
+	/**
+	 * 获取一条商品信息
+	 *
+	 * @param int $goodsId
+	 *
+	 * @return null|static
+	 */
+	public static function getOne($goodsId = 0) {
+		return parent::find()->where(['id'=>$goodsId, 'status'=>1])->one();
+	}
 }

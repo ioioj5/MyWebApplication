@@ -14,9 +14,38 @@ $this->params['breadcrumbs'][] = $this->title;
 				<tr>
 					<td><?= $val->id; ?></td>
 					<td><?= $val->name; ?></td>
-					<td><a href="javascript:void(0);">加入购物车</a> <a href="javascript:void(0);">购买</a></td>
+					<td><a href="javascript:void(0);" class="addCart" data-id="<?= $val->id; ?>">加入购物车</a> <a href="javascript:void(0);">购买</a></td>
 				</tr>
 			<?php endforeach; ?>
 		<?php endif; ?>
     </table>
 </div>
+
+<?php
+// 添加购物车url
+$addCartUrl = \yii\helpers\Url::toRoute('ajax/add-cart');
+
+$js = <<<JS
+$(".addCart").click(function(){
+	var goodsId = $(this).data('id');
+	
+	$.ajax({
+	    url: '{$addCartUrl}',
+	    data: {goodsId: goodsId},
+	    type: 'post',
+	    cache: false,
+	    dataType: 'json',
+	    
+	    success: function(response){
+	        if(response.code == 1) {
+	            console.log(response.msg);
+	        }
+	    },
+	    error: function(){
+	        console.log('异常...');
+	    }
+	});
+});
+JS;
+$this->registerJs ( $js );
+?>

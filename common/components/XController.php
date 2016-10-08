@@ -11,8 +11,12 @@ namespace common\components;
 use yii\web\Controller;
 
 class XController extends Controller {
+	protected $time = 0;
+	protected $response = ['code'=>1, 'msg'=>''];
+
 	public function init(){
 		parent::init();
+		$this->time = time();
 	}
 
 	/**

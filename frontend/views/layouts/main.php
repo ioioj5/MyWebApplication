@@ -45,12 +45,6 @@ AppAsset::register ( $this );
 			'url'   => [
 				'/site/about'
 			]
-		],
-		[
-			'label' => 'Contact',
-			'url'   => [
-				'/site/contact'
-			]
 		]
 	];
 	if ( Yii::$app->user->isGuest ) {
@@ -67,6 +61,12 @@ AppAsset::register ( $this );
 			]
 		];
 	} else {
+		$menuItems [] = [
+			'label' => 'Cart',
+			'url'   => [
+				'/cart/index'
+			]
+		];
 		$menuItems [] = '<li>' . Html::beginForm ( [
 				'/auth/logout'
 			], 'post' ) . Html::submitButton ( 'Logout (' . Yii::$app->user->identity->email . ')', [
