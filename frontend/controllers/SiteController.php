@@ -2,12 +2,15 @@
 
 namespace frontend\controllers;
 
+use common\components\FrontController;
+use frontend\models\Goods;
 use Yii;
 use frontend\models\PasswordResetRequestForm;
 use frontend\models\ResetPasswordForm;
 use frontend\models\SignupForm;
 use frontend\models\ContactForm;
 use yii\base\InvalidParamException;
+use yii\helpers\Url;
 use yii\web\BadRequestHttpException;
 use yii\web\Controller;
 use yii\filters\VerbFilter;
@@ -16,7 +19,7 @@ use yii\filters\AccessControl;
 /**
  * Site controller
  */
-class SiteController extends Controller {
+class SiteController extends FrontController {
 	/**
 	 * @inheritdoc
 	 */
@@ -81,7 +84,27 @@ class SiteController extends Controller {
 	 * @return mixed
 	 */
 	public function actionIndex () {
-		return $this->render ( 'index' );
+		$page = intval ( Yii::$app->request->get ( 'page' ) );
+
+		$limit  = 20;
+		$offset = ( $page - 1 ) * $limit;
+		$params = array ( 'site/index', 'page' => '{page}' ); // 生成URL参数数组
+
+
+		$list      = Goods::getGoodsList ( $limit, $offset );
+		$totalPage = ceil ( $list[ 'count' ] / $limit );
+		$link      = Url::toRoute ( $params ); //$this->createUrl ( 'admin/index', $params ); // '/page/{page}';
+		$navbar    = $this->pager ( $page, $limit, $list[ 'count' ], $link, 'active', '' );
+
+		return $this->render ( 'index', [
+			'list'      => $list,
+			'navbar'    => $navbar,
+			'totalPage' => $totalPage,
+			'total'     => $list[ 'count' ],
+			'page'      => $page,
+			'limit'     => $limit,
+			'params'    => $params
+		] );
 	}
 
 	/**

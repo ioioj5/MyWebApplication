@@ -8,9 +8,15 @@ $this->title = 'Index';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="site-index">
-    <h1><?= Html::encode($this->title) ?></h1>
-
-    <p>This is the About page. You may modify the following file to customize its content:</p>
-
-    <code><?= __FILE__ ?></code>
+    <table class="table">
+        <?php if(! empty($list['fields'])): ?>
+			<?php foreach($list['fields'] as $key=>$val): ?>
+				<tr>
+					<td><?= $val->id; ?></td>
+					<td><?= $val->name; ?></td>
+					<td><a href="javascript:void(0);">加入购物车</a> <a href="javascript:void(0);">购买</a></td>
+				</tr>
+			<?php endforeach; ?>
+		<?php endif; ?>
+    </table>
 </div>

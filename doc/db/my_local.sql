@@ -1,9 +1,9 @@
 -- phpMyAdmin SQL Dump
--- version 4.6.4
--- https://www.phpmyadmin.net/
+-- version 4.6.0
+-- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: 2016-10-07 20:24:53
+-- Generation Time: 2016-10-08 18:02:28
 -- 服务器版本： 5.6.30
 -- PHP Version: 5.5.37
 
@@ -62,10 +62,10 @@ CREATE TABLE `tbl_goods` (
 --
 
 INSERT INTO `tbl_goods` (`id`, `name`, `price`, `postTime`, `status`) VALUES
-(4, '第二件商品', '2.00', 1475838555, 0),
-(6, '第三件商品', '1.00', 1475838563, 0),
-(7, '第四件商品', '1.00', 1475838569, 0),
-(8, '第五件商品', '1.10', 1475839627, 0);
+(4, '第二件商品', '2.00', 1475838555, 1),
+(6, '第三件商品', '1.00', 1475838563, 1),
+(7, '第四件商品', '1.00', 1475838569, 1),
+(8, '第五件商品', '1.10', 1475839627, 1);
 
 -- --------------------------------------------------------
 
@@ -151,6 +151,20 @@ CREATE TABLE `tbl_user_address` (
   `postTime` int(10) NOT NULL COMMENT '添加时间'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='用户收获地址';
 
+-- --------------------------------------------------------
+
+--
+-- 表的结构 `tbl_user_cart`
+--
+
+CREATE TABLE `tbl_user_cart` (
+  `id` int(11) NOT NULL COMMENT '购物车id',
+  `userId` int(11) NOT NULL COMMENT '用户id',
+  `goodsId` int(11) NOT NULL COMMENT '商品id',
+  `num` int(11) NOT NULL COMMENT '数量',
+  `postTime` int(10) NOT NULL COMMENT '添加时间'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='购物车';
+
 --
 -- Indexes for dumped tables
 --
@@ -198,6 +212,12 @@ ALTER TABLE `tbl_user_address`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `tbl_user_cart`
+--
+ALTER TABLE `tbl_user_cart`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- 在导出的表使用AUTO_INCREMENT
 --
 
@@ -236,6 +256,11 @@ ALTER TABLE `tbl_user`
 --
 ALTER TABLE `tbl_user_address`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+--
+-- 使用表AUTO_INCREMENT `tbl_user_cart`
+--
+ALTER TABLE `tbl_user_cart`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '购物车id';
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
