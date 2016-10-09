@@ -18,32 +18,9 @@ class UserCart extends \common\models\UserCart {
 	 *
 	 * @return array
 	 */
-<<<<<<< HEAD
 	public static function getCarts($limit, $offset){
 		$fields = parent::find()->limit($limit)->offset($offset)->orderBy('id DESC')->all();
 		$count = parent::find()->count();
-=======
-	public static function getCartList($limit, $offset){
-		//$fields = parent::find()->joinWith('%goods', false)->limit($limit)->offset($offset)->orderBy('id DESC')->all();
-		//$fields = parent::find(['uc.id', 'g.name'])->alias('uc')->leftJoin('{{%goods}} as `g`', 'g.id = uc.goodsId')->asArray()->all();
-		$fields = parent::findBySql("
-			SELECT 
-				`uc` . `id`, `uc` . `goodsId`, `uc` . `num`, `uc` . `postTime`,
-				 `g` . `name`, `g` . `price`
-			FROM {{%user_cart}} as `uc` 
-			LEFT JOIN {{%goods}} as `g` 
-			ON `g` . `id` = `uc` . `goodsId`
-		")->asArray()->all();
-		$count = parent::findBySql("
-			SELECT 
-				`uc` . `id`, `uc` . `goodsId`, `uc` . `num`, `uc` . `postTime`,
-				 `g` . `name`, `g` . `price`
-			FROM {{%user_cart}} as `uc` 
-			LEFT JOIN {{%goods}} as `g` 
-			ON `g` . `id` = `uc` . `goodsId`
-		")->asArray()->count();
->>>>>>> fc8fd7a73fdb18ed78a3ec5ad383b32c8e74eed3
-
 		return ['fields'=>$fields, 'count'=>$count];
 	}
 
