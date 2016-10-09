@@ -16,7 +16,15 @@ use Yii;
 
 class AjaxController extends FrontController {
 	public $enableCsrfValidation = false;
+<<<<<<< HEAD
 	// 添加到购物车
+=======
+
+	/**
+	 * 添加到购物车
+	 * @return string
+	 */
+>>>>>>> fc8fd7a73fdb18ed78a3ec5ad383b32c8e74eed3
 	public function actionAddCart(){
 		if(Yii::$app->request->isAjax) {
 			// 检测用户是否已登录
@@ -67,6 +75,7 @@ class AjaxController extends FrontController {
 		}
 	}
 
+<<<<<<< HEAD
 	// 更改购物车商品数量 (增加或减少)
 	public function actionChangeGoodsNum(){
 		if(Yii::$app->request->isAjax) {
@@ -186,5 +195,19 @@ class AjaxController extends FrontController {
 				}
 			}
 		}
+=======
+	/**
+	 * 从购物车删除
+	 */
+	public function actionRemoveCart(){
+
+	}
+
+	/**
+	 * 更改购物车商品数量
+	 */
+	public function actionChangeGoodsNumInCart(){
+
+>>>>>>> fc8fd7a73fdb18ed78a3ec5ad383b32c8e74eed3
 	}
 }

@@ -16,12 +16,21 @@ $this->params['breadcrumbs'][] = $this->title;
 			<?php foreach($list['fields'] as $key=>$val): ?>
 				<tr>
 					<td><?= $val['id']; ?></td>
+<<<<<<< HEAD
 					<td><?= $val->goods->name; //['name']; ?></td>
 					<td id="goodsNum<?= $val['id']; ?>"><?= $val['num']; ?></td>
 					<td>
 						<a href="javascript:void(0);" class="btn btn-link minusCart" data-id="<?= $val['id']; ?>">-</a>
 						<a href="javascript:void(0);" class="btn btn-link plusCart" data-id="<?= $val['id']; ?>">+</a>
 						<a href="javascript:void(0);" class="removeCart btn btn-link removeCart" data-id="<?= $val['id']; ?>">删除全部</a>
+=======
+					<td><?= $val['name']; ?></td>
+					<td><?= $val['num']; ?></td>
+					<td>
+						<a href="javascript:void(0);" class="btn btn-link">-</a>
+						<a href="javascript:void(0);" class="btn btn-link">+</a>
+						<a href="javascript:void(0);" class="removeCart btn btn-link" data-id="<?= $val['id']; ?>">删除全部</a>
+>>>>>>> fc8fd7a73fdb18ed78a3ec5ad383b32c8e74eed3
 					</td>
 				</tr>
 			<?php endforeach; ?>
