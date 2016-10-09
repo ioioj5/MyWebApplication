@@ -21,8 +21,8 @@ class CartController extends FrontController {
 		$offset = ( $page - 1 ) * $limit;
 		$params = array ( 'cart/index', 'page' => '{page}' ); // 生成URL参数数组
 
+		$list      = UserCart::getCarts ( $limit, $offset );
 
-		$list      = UserCart::getCartList ( $limit, $offset );
 		$totalPage = ceil ( $list[ 'count' ] / $limit );
 		$link      = Url::toRoute ( $params ); //$this->createUrl ( 'admin/index', $params ); // '/page/{page}';
 		$navbar    = $this->pager ( $page, $limit, $list[ 'count' ], $link, 'active', '' );
