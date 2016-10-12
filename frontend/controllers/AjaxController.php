@@ -16,15 +16,11 @@ use Yii;
 
 class AjaxController extends FrontController {
 	public $enableCsrfValidation = false;
-<<<<<<< HEAD
-	// 添加到购物车
-=======
 
 	/**
 	 * 添加到购物车
 	 * @return string
 	 */
->>>>>>> fc8fd7a73fdb18ed78a3ec5ad383b32c8e74eed3
 	public function actionAddCart(){
 		if(Yii::$app->request->isAjax) {
 			// 检测用户是否已登录
@@ -75,7 +71,6 @@ class AjaxController extends FrontController {
 		}
 	}
 
-<<<<<<< HEAD
 	// 更改购物车商品数量 (增加或减少)
 	public function actionChangeGoodsNum(){
 		if(Yii::$app->request->isAjax) {
@@ -170,32 +165,32 @@ class AjaxController extends FrontController {
 	}
 
 	// 清空购物画册
-	public function actionCleanCart(){
-		if(Yii::$app->request->isAjax) {
+	public function actionCleanCart() {
+		if ( Yii::$app->request->isAjax ) {
 			// 检测用户是否已登录
-			if(Yii::$app->user->isGuest) {
-				$this->response['code'] = 1;
-				$this->response['msg'] = '请登录后进行此操作';
+			if ( Yii::$app->user->isGuest ) {
+				$this->response[ 'code' ] = 1;
+				$this->response[ 'msg' ]  = '请登录后进行此操作';
 
-				return json_encode($this->response);
+				return json_encode ( $this->response );
 			}
 
-			$carts = UserCart::find()->count();
-			if($carts > 0) {
-				if(UserCart::deleteAll(['userId = :userId', ':userId'=>Yii::$app->user->id])) {
-					$this->response['code'] = 0;
-					$this->response['msg'] = '操作成功';
+			$carts = UserCart::find ()->count ();
+			if ( $carts > 0 ) {
+				if ( UserCart::deleteAll ( [ 'userId = :userId', ':userId' => Yii::$app->user->id ] ) ) {
+					$this->response[ 'code' ] = 0;
+					$this->response[ 'msg' ]  = '操作成功';
 
-					return json_encode($this->response);
-				}else {
-					$this->response['code'] = 1;
-					$this->response['msg'] = '操作失败';
+					return json_encode ( $this->response );
+				} else {
+					$this->response[ 'code' ] = 1;
+					$this->response[ 'msg' ]  = '操作失败';
 
-					return json_encode($this->response);
+					return json_encode ( $this->response );
 				}
 			}
 		}
-=======
+	}
 	/**
 	 * 从购物车删除
 	 */
@@ -208,6 +203,5 @@ class AjaxController extends FrontController {
 	 */
 	public function actionChangeGoodsNumInCart(){
 
->>>>>>> fc8fd7a73fdb18ed78a3ec5ad383b32c8e74eed3
 	}
 }
