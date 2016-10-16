@@ -49,6 +49,9 @@ AppAsset::register ( $this );
 			<li <?php if($this->context->id == 'goods'): ?>class="active"<?php endif; ?>>
 				<a href="<?= Url::toRoute('goods/index')?>"><i class="fa fa-cubes"></i>商品管理</a>
 			</li>
+			<li <?php if($this->context->id == 'user'): ?>class="active"<?php endif; ?>>
+				<a href="<?= Url::toRoute('user/index')?>"><i class="fa fa-cubes"></i>用户管理</a>
+			</li>
 			<li>
 				<a href="<?= Url::toRoute(['auth/sign-out'])?>"><i class="fa fa-sign-out"></i>Sign Out</a>
 			</li>
