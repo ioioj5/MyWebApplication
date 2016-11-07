@@ -3,11 +3,11 @@
 namespace frontend\controllers;
 
 use common\components\FrontController;
+use common\models\SignupForm;
 use frontend\models\Goods;
 use Yii;
 use frontend\models\PasswordResetRequestForm;
 use frontend\models\ResetPasswordForm;
-use frontend\models\SignupForm;
 use frontend\models\ContactForm;
 use yii\base\InvalidParamException;
 use yii\helpers\Url;
