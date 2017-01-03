@@ -11,6 +11,7 @@ namespace frontend\controllers;
 use common\components\FrontController;
 use common\models\User;
 use frontend\models\Goods;
+use frontend\models\UserAddress;
 use frontend\models\UserCart;
 use Yii;
 
@@ -280,9 +281,9 @@ class AjaxController extends FrontController {
 	 */
 	public function actionAddNewAddress () {
 		if ( Yii::$app->request->isAjax ) {
-			$name = trim(Yii::$app->request->post('name')); // 收货人
-			$address = trim(Yii::$app->request->post('address')); // 详细地址
-			$contact = trim(Yii::$app->request->post('contact')); // 联系方式
+			$name    = trim ( Yii::$app->request->post ( 'name' ) ); // 收货人
+			$address = trim ( Yii::$app->request->post ( 'address' ) ); // 详细地址
+			$contact = trim ( Yii::$app->request->post ( 'contact' ) ); // 联系方式
 
 			// 检测用户是否已登录
 			if ( Yii::$app->user->isGuest ) {
@@ -292,47 +293,54 @@ class AjaxController extends FrontController {
 				return json_encode ( $this->response );
 			}
 
-			$data = ['postTime'=>$this->time];
+			$data = [ 'userId' => Yii::$app->user->id, 'postTime' => $this->time ];
 
 			// 检测变量
-			if(empty($name)) {
-				$this->response['code'] = 1;
-				$this->response['msg'] = '收货人不能为空';
+			if ( empty( $name ) ) {
+				$this->response[ 'code' ] = 1;
+				$this->response[ 'msg' ]  = '收货人不能为空';
 
-				return json_encode($this->response);
-			}else {
-				$data['name'] = $name;
+				return json_encode ( $this->response );
+			} else {
+				$data[ 'name' ] = $name;
 			}
-			if(empty($address)) {
-				$this->response['code'] = 1;
-				$this->response['msg'] = '详细地址不能为空';
+			if ( empty( $address ) ) {
+				$this->response[ 'code' ] = 1;
+				$this->response[ 'msg' ]  = '详细地址不能为空';
 
-				return json_encode($this->response);
-			}else {
-				$data['address'] = $address;
+				return json_encode ( $this->response );
+			} else {
+				$data[ 'address' ] = $address;
 			}
-			if(empty($contact)) {
-				$this->response['code'] = 1;
-				$this->response['msg'] = '联系方式不能为空';
+			if ( empty( $contact ) ) {
+				$this->response[ 'code' ] = 1;
+				$this->response[ 'msg' ]  = '联系方式不能为空';
 
-				return json_encode($this->response);
-			}else {
-				$data['contact'] = $contact;
+				return json_encode ( $this->response );
+			} else {
+				$data[ 'contact' ] = $contact;
+			}
+			// 检测当前是否已经存在收货地址
+			$addressList = UserAddress::getAddressListByUserId ( Yii::$app->user->id );
+			if ( empty( $addressList ) ) {
+				$data[ 'isDefault' ] = 1; // 第一次添加收货地址, 设为默认收货地址
+			} else {
+				$data[ 'isDefault' ] = 0;
 			}
 
 			// 入库
-			$return = Yii::$app->db->createCommand()->insert('{{%user_address}}', $data)->execute();
+			$return = Yii::$app->db->createCommand ()->insert ( '{{%user_address}}', $data )->execute ();
 
-			if($return) {
-				$this->response['code'] = 0;
-				$this->response['msg'] = '添加成功';
+			if ( $return ) {
+				$this->response[ 'code' ] = 0;
+				$this->response[ 'msg' ]  = '添加成功';
 
-				return json_encode($this->response);
-			}else {
-				$this->response['code'] = 1;
-				$this->response['msg'] = '添加失败';
+				return json_encode ( $this->response );
+			} else {
+				$this->response[ 'code' ] = 1;
+				$this->response[ 'msg' ]  = '添加失败';
 
-				return json_encode($this->response);
+				return json_encode ( $this->response );
 			}
 
 		}

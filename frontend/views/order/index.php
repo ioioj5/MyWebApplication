@@ -4,34 +4,63 @@ use yii\helpers\Html;
 $this->title = 'Order';
 $this->params['breadcrumbs'][] = $this->title;
 $this->registerCssFile ( '@web/css/jquery.toast.min.css', ['depends'=>['frontend\assets\AppAsset']]);
+
+$totalMoney = 0; // 总商品金额
+$count = 0; // 商品数量
 ?>
 <div class="site-index">
+    <form method="POST" action="<?= \yii\helpers\Url::toRoute('order/submit'); ?>">
+        <input type="hidden" name="<?= Yii::$app->request->csrfParam; ?>" value="<?= Yii::$app->request->getCsrfToken(); ?>">
     <div class="panel panel-default">
         <div class="panel-heading">收货人信息<p class="pull-right"><a href="javascript:void(0);" class="addNewAddress">新增收获地址</a></p></div>
         <div class="panel-body">
             Panel content
         </div>
+        <table class="table">
+            <tr>
+                <td>&nbsp;</td>
+                <td>收货人</td>
+                <td>详细地址</td>
+                <td>联系方式</td>
+            </tr>
+			<?php if(! empty($addressList)): ?>
+				<?php foreach($addressList as $key=>$val): ?>
+                    <tr>
+                        <td><input type="radio" name="addressId" value="<?= $val->id;?>" <?php if($val->isDefault == 1): ?>checked<?php endif; ?>></td>
+                        <td><?= $val->name; ?></td>
+                        <td><?= $val->address; ?></td>
+                        <td><?= $val->contact; ?></td>
+                    </tr>
+				<?php endforeach; ?>
+			<?php endif; ?>
+        </table>
     </div>
     <div class="panel panel-default">
         <div class="panel-heading">支付方式</div>
         <div class="panel-body">
             <div class="btn-group" data-toggle="buttons">
                 <label class="btn btn-default active">
-                    <input type="radio" name="options" id="option1" autocomplete="off" checked>货到付款
+                    <input type="radio" name="payType" autocomplete="off" checked>货到付款
                 </label>
                 <label class="btn btn-default">
-                    <input type="radio" name="options" id="option2" autocomplete="off"> 支付宝支付
+                    <input type="radio" name="payType" autocomplete="off"> 支付宝支付
                 </label>
                 <label class="btn btn-default">
-                    <input type="radio" name="options" id="option3" autocomplete="off"> 微信支付
+                    <input type="radio" name="payType" autocomplete="off"> 微信支付
                 </label>
             </div>
         </div>
     </div>
+    <?php if(! empty($cartList)): ?>
+        <?php foreach($cartList as $key=>$val): ?>
+            <?php $totalMoney += $val->goods->price * $val->num; ?>
+            <?php $count += $val->num; ?>
+        <?php endforeach; ?>
+    <?php endif; ?>
     <div class="panel panel-default">
         <div class="panel-heading">商品</div>
         <div class="panel-body">
-            <p>1 件商品，总商品金额: ￥2199.00</p>
+            <p><?= $count; ?> 件商品，总商品金额: ￥<?= sprintf('%.2f', $totalMoney); ?></p>
         </div>
         <table class="table">
             <tr>
@@ -40,13 +69,13 @@ $this->registerCssFile ( '@web/css/jquery.toast.min.css', ['depends'=>['frontend
                 <td>单价</td>
                 <td>数量</td>
             </tr>
-			<?php if(! empty($list['fields'])): ?>
-				<?php foreach($list['fields'] as $key=>$val): ?>
+			<?php if(! empty($cartList)): ?>
+				<?php foreach($cartList as $key=>$val): ?>
                     <tr>
                         <td><?= $val['id']; ?></td>
                         <td><?= $val->goods->name; //['name']; ?></td>
                         <td><?= $val->goods->price; ?></td>
-                        <td id="goodsNum<?= $val['id']; ?>"><?= $val['num']; ?></td>
+                        <td id="goodsNum<?= $val->id; ?>"><?= $val->num; ?></td>
                     </tr>
 				<?php endforeach; ?>
 			<?php endif; ?>
@@ -60,8 +89,10 @@ $this->registerCssFile ( '@web/css/jquery.toast.min.css', ['depends'=>['frontend
     </div>
 
     <div class="pull-right">
-        <a href="<?= \yii\helpers\Url::toRoute(['order/index']); ?>" class="btn btn-default">提交订单</a>
+        <button class="btn btn-default" type="submit">提交订单</button>
     </div>
+
+    </form>
 </div>
 
 <!-- modal -->

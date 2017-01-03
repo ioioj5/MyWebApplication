@@ -2,32 +2,35 @@
 namespace frontend\controllers;
 
 use common\components\FrontController;
+use frontend\models\UserAddress;
 use frontend\models\UserCart;
 use Yii;
-use yii\helpers\Url;
 
-class OrderController extends FrontController{
-	public function actionIndex(){
-		$page = intval ( Yii::$app->request->get ( 'page' ) );
+class OrderController extends FrontController {
+	public function actionIndex () {
 
-		$limit  = 20;
-		$offset = ( $page - 1 ) * $limit;
-		$params = array ( 'cart/index', 'page' => '{page}' ); // 生成URL参数数组
+		// 购物车
+		$cartList = UserCart::getCartsByUserId ( Yii::$app->user->id );
 
-		$list      = UserCart::getCarts ( $limit, $offset );
-
-		$totalPage = ceil ( $list[ 'count' ] / $limit );
-		$link      = Url::toRoute ( $params ); //$this->createUrl ( 'admin/index', $params ); // '/page/{page}';
-		$navbar    = $this->pager ( $page, $limit, $list[ 'count' ], $link, 'active', '' );
+		// 收货地址列表
+		$addressList = UserAddress::getAddressListByUserId ( Yii::$app->user->id );
 
 		return $this->render ( 'index', [
-			'list'      => $list,
-			'navbar'    => $navbar,
-			'totalPage' => $totalPage,
-			'total'     => $list[ 'count' ],
-			'page'      => $page,
-			'limit'     => $limit,
-			'params'    => $params
+			'cartList'    => $cartList,
+			'addressList' => $addressList
 		] );
+	}
+
+	/**
+	 * 提交订单
+	 */
+	public function actionSubmit () {
+		if ( Yii::$app->request->isPost ) {
+			$addressId = intval ( Yii::$app->request->post ( 'addressId' ) ); // 收货地址
+			$payType   = intval ( Yii::$app->request->post ( 'payType' ) ); // 支付方式
+
+
+			// 检测参数
+		}
 	}
 }

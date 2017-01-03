@@ -18,10 +18,14 @@ class UserCart extends \common\models\UserCart {
 	 *
 	 * @return array
 	 */
-	public static function getCarts($limit, $offset){
+	public static function getCartsByLimit($limit, $offset){
 		$fields = parent::find()->limit($limit)->offset($offset)->orderBy('id DESC')->all();
 		$count = parent::find()->count();
 		return ['fields'=>$fields, 'count'=>$count];
+	}
+
+	public static function getCartsByUserId($userId = 0){
+		return parent::find()->where(['userId'=>$userId])->all();
 	}
 
 	/**
