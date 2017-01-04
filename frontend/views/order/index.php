@@ -40,13 +40,13 @@ $count = 0; // 商品数量
         <div class="panel-body">
             <div class="btn-group" data-toggle="buttons">
                 <label class="btn btn-default active">
-                    <input type="radio" name="payType" autocomplete="off" checked>货到付款
+                    <input type="radio" name="payType" value="1" autocomplete="off" checked>货到付款
                 </label>
                 <label class="btn btn-default">
-                    <input type="radio" name="payType" autocomplete="off"> 支付宝支付
+                    <input type="radio" name="payType" value="2" autocomplete="off"> 支付宝支付
                 </label>
                 <label class="btn btn-default">
-                    <input type="radio" name="payType" autocomplete="off"> 微信支付
+                    <input type="radio" name="payType" value="3" autocomplete="off"> 微信支付
                 </label>
             </div>
         </div>

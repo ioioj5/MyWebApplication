@@ -5,6 +5,7 @@ use common\components\FrontController;
 use frontend\models\UserAddress;
 use frontend\models\UserCart;
 use Yii;
+use yii\web\NotFoundHttpException;
 
 class OrderController extends FrontController {
 	public function actionIndex () {
@@ -31,6 +32,15 @@ class OrderController extends FrontController {
 
 
 			// 检测参数
+			if($addressId < 1) {
+				throw new NotFoundHttpException( '缺少收货地址Id', 404 );
+			}
+			if(! in_array($payType, [1,2,3])) {
+				throw new NotFoundHttpException( '支付方式超出系统设置', 404 );
+			}
+
+			
+
 		}
 	}
 }

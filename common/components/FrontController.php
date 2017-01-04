@@ -13,4 +13,6 @@ class FrontController extends XController {
 		parent::init();
 	}
 
+
+
 }
