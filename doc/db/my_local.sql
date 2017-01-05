@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net
 --
 -- 主机: localhost
--- 生成日期: 2017-01-05 21:51:28
+-- 生成日期: 2017-01-06 05:00:58
 -- 服务器版本: 5.6.30
 -- PHP 版本: 5.5.37
 
@@ -37,13 +37,6 @@ CREATE TABLE IF NOT EXISTS `tbl_admin` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='用户表' AUTO_INCREMENT=2 ;
 
---
--- 转存表中的数据 `tbl_admin`
---
-
-INSERT INTO `tbl_admin` (`id`, `username`, `email`, `password`, `token`, `addtime`, `status`) VALUES
-(1, 'admin', 'peng_du2007@qq.com', '$2a$15$C81gSdUkgmzt4Y23hVucjOeI66S8zOq21PIzaCfcchgoSfG51TxNe', 'RmFldUtWc0sMKndv-zgfbjFdFl-0_gZq', 1469202625, 1);
-
 -- --------------------------------------------------------
 
 --
@@ -58,16 +51,6 @@ CREATE TABLE IF NOT EXISTS `tbl_goods` (
   `status` tinyint(1) NOT NULL DEFAULT '0' COMMENT '0-不可用, 1- 上架， 2-下架',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='商品表' AUTO_INCREMENT=9 ;
-
---
--- 转存表中的数据 `tbl_goods`
---
-
-INSERT INTO `tbl_goods` (`id`, `name`, `price`, `postTime`, `status`) VALUES
-(4, '第二件商品', '2.00', 1475838555, 1),
-(6, '第三件商品', '1.00', 1475838563, 1),
-(7, '第四件商品', '1.00', 1475838569, 1),
-(8, '第五件商品', '1.10', 1475839627, 1);
 
 -- --------------------------------------------------------
 
@@ -85,14 +68,7 @@ CREATE TABLE IF NOT EXISTS `tbl_order` (
   `payTime` int(10) NOT NULL COMMENT '支付时间',
   `postTime` int(10) NOT NULL COMMENT '订单生成时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='订单表' AUTO_INCREMENT=2 ;
-
---
--- 转存表中的数据 `tbl_order`
---
-
-INSERT INTO `tbl_order` (`id`, `userId`, `orderCode`, `price`, `payStatus`, `orderStatus`, `payTime`, `postTime`) VALUES
-(1, 1, '201701052150484682617129', '5', 0, 0, 0, 1483624248);
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='订单表' AUTO_INCREMENT=6 ;
 
 -- --------------------------------------------------------
 
@@ -108,14 +84,7 @@ CREATE TABLE IF NOT EXISTS `tbl_order_address` (
   `address` varchar(255) NOT NULL COMMENT '收货地址',
   `postTime` int(10) NOT NULL COMMENT '添加时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='用户收获地址' AUTO_INCREMENT=2 ;
-
---
--- 转存表中的数据 `tbl_order_address`
---
-
-INSERT INTO `tbl_order_address` (`id`, `orderId`, `name`, `contact`, `address`, `postTime`) VALUES
-(1, 1, '都鹏', '18701533389', '北京市丰台区分钟寺分中公寓', 1483624248);
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='用户收获地址' AUTO_INCREMENT=6 ;
 
 -- --------------------------------------------------------
 
@@ -132,15 +101,7 @@ CREATE TABLE IF NOT EXISTS `tbl_order_goods` (
   `num` int(11) NOT NULL DEFAULT '0' COMMENT '商品数量',
   `postTime` int(10) NOT NULL DEFAULT '0' COMMENT '添加时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='订单商品表' AUTO_INCREMENT=3 ;
-
---
--- 转存表中的数据 `tbl_order_goods`
---
-
-INSERT INTO `tbl_order_goods` (`id`, `orderId`, `goodsId`, `goodsName`, `price`, `num`, `postTime`) VALUES
-(1, 8, 0, '1.10', '2.00', 1483624248, 1),
-(2, 6, 0, '1.00', '3.00', 1483624248, 1);
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='订单商品表' AUTO_INCREMENT=9 ;
 
 -- --------------------------------------------------------
 
@@ -155,14 +116,7 @@ CREATE TABLE IF NOT EXISTS `tbl_order_log` (
   `orderStatus` tinyint(1) NOT NULL COMMENT '订单状态',
   `postTime` int(10) NOT NULL COMMENT '添加时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='订单日志表' AUTO_INCREMENT=2 ;
-
---
--- 转存表中的数据 `tbl_order_log`
---
-
-INSERT INTO `tbl_order_log` (`id`, `userId`, `orderId`, `orderStatus`, `postTime`) VALUES
-(1, 1, 1, 0, 1483624248);
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='订单日志表' AUTO_INCREMENT=6 ;
 
 -- --------------------------------------------------------
 
@@ -180,13 +134,6 @@ CREATE TABLE IF NOT EXISTS `tbl_user` (
   `status` tinyint(1) NOT NULL DEFAULT '1' COMMENT '用户状态(1-正常,0-关闭)',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='用户表' AUTO_INCREMENT=2 ;
-
---
--- 转存表中的数据 `tbl_user`
---
-
-INSERT INTO `tbl_user` (`id`, `email`, `password`, `token`, `regtime`, `logintime`, `status`) VALUES
-(1, 'peng_du2007@qq.com', '$2a$15$C81gSdUkgmzt4Y23hVucjOeI66S8zOq21PIzaCfcchgoSfG51TxNe', 'RmFldUtWc0sMKndv-zgfbjFdFl-0_gZq', 1469202625, 1469202625, 1);
 
 -- --------------------------------------------------------
 
@@ -206,14 +153,6 @@ CREATE TABLE IF NOT EXISTS `tbl_user_address` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='用户收获地址' AUTO_INCREMENT=3 ;
 
---
--- 转存表中的数据 `tbl_user_address`
---
-
-INSERT INTO `tbl_user_address` (`id`, `userId`, `name`, `contact`, `address`, `isDefault`, `postTime`, `updateTime`) VALUES
-(1, 1, '都鹏', '18701533389', '北京市丰台区分钟寺分中公寓', 1, 1483451860, 0),
-(2, 1, 'asdasd', 'asdasd', 'asd', 0, 1483537577, 0);
-
 -- --------------------------------------------------------
 
 --
@@ -229,16 +168,7 @@ CREATE TABLE IF NOT EXISTS `tbl_user_cart` (
   `postTime` int(10) NOT NULL COMMENT '添加时间',
   `updateTime` int(10) NOT NULL DEFAULT '0' COMMENT '更新时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='购物车' AUTO_INCREMENT=19 ;
-
---
--- 转存表中的数据 `tbl_user_cart`
---
-
-INSERT INTO `tbl_user_cart` (`id`, `userId`, `goodsId`, `num`, `isChecked`, `postTime`, `updateTime`) VALUES
-(16, 2, 7, 3, 1, 1483290736, 1483290742),
-(17, 1, 8, 2, 1, 1483290736, 1483290743),
-(18, 1, 6, 3, 1, 1483290737, 1483290744);
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='购物车' AUTO_INCREMENT=21 ;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

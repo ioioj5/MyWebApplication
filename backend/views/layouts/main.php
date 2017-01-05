@@ -46,9 +46,12 @@ AppAsset::register ( $this );
 				</form>
 			</li>
 			<li <?php if($this->context->id == 'site'): ?>class="active"<?php endif; ?>><a href="<?= Url::toRoute('site/index');?>"><i class="fa fa-home"></i>控制面板</a></li>
-			<li <?php if($this->context->id == 'goods'): ?>class="active"<?php endif; ?>>
-				<a href="<?= Url::toRoute('goods/index')?>"><i class="fa fa-cubes"></i>商品管理</a>
-			</li>
+            <li <?php if($this->context->id == 'goods'): ?>class="active"<?php endif; ?>>
+                <a href="<?= Url::toRoute('goods/index')?>"><i class="fa fa-cubes"></i>商品管理</a>
+            </li>
+            <li <?php if($this->context->id == 'order'): ?>class="active"<?php endif; ?>>
+                <a href="<?= Url::toRoute('order/index')?>"><i class="fa fa-cubes"></i>订单管理</a>
+            </li>
 			<li <?php if($this->context->id == 'user'): ?>class="active"<?php endif; ?>>
 				<a href="<?= Url::toRoute('user/index')?>"><i class="fa fa-cubes"></i>用户管理</a>
 			</li>

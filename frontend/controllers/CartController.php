@@ -21,7 +21,7 @@ class CartController extends FrontController {
 		$offset = ( $page - 1 ) * $limit;
 		$params = array ( 'cart/index', 'page' => '{page}' ); // 生成URL参数数组
 
-		$list      = UserCart::getCartsByLimit ( $limit, $offset );
+		$list      = UserCart::getCartsByLimit ( Yii::$app->user->id, $limit, $offset );
 
 		$totalPage = ceil ( $list[ 'count' ] / $limit );
 		$link      = Url::toRoute ( $params ); //$this->createUrl ( 'admin/index', $params ); // '/page/{page}';

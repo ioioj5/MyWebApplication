@@ -18,9 +18,9 @@ class UserCart extends \common\models\UserCart {
 	 *
 	 * @return array
 	 */
-	public static function getCartsByLimit($limit, $offset){
-		$fields = parent::find()->limit($limit)->offset($offset)->orderBy('id DESC')->all();
-		$count = parent::find()->count();
+	public static function getCartsByLimit($userId = 0, $limit, $offset){
+		$fields = parent::find()->where(['userId'=>$userId])->limit($limit)->offset($offset)->orderBy('id DESC')->all();
+		$count = parent::find()->where(['userId'=>$userId])->count();
 		return ['fields'=>$fields, 'count'=>$count];
 	}
 

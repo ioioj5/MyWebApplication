@@ -6,6 +6,7 @@ $this->params['breadcrumbs'][] = $this->title;
 $this->registerCssFile ( '@web/css/jquery.toast.min.css', ['depends'=>['frontend\assets\AppAsset']]);
 ?>
 <div class="site-index">
+	<?php if(! empty($list['fields'])): ?>
 	<table class="table">
 		<tr>
 			<td>ID</td>
@@ -14,7 +15,6 @@ $this->registerCssFile ( '@web/css/jquery.toast.min.css', ['depends'=>['frontend
 			<td>数量</td>
 			<td>操作</td>
 		</tr>
-		<?php if(! empty($list['fields'])): ?>
 			<?php foreach($list['fields'] as $key=>$val): ?>
 				<tr>
 					<td><input type="checkbox" class="selectGoods" value="<?= $val['id']; ?>" <?php if($val['isChecked'] == 1): ?>checked<?php endif; ?>></td>
@@ -28,11 +28,15 @@ $this->registerCssFile ( '@web/css/jquery.toast.min.css', ['depends'=>['frontend
 					</td>
 				</tr>
 			<?php endforeach; ?>
-		<?php endif; ?>
 	</table>
     <div class="pull-right">
         <a href="<?= \yii\helpers\Url::toRoute(['order/index']); ?>" class="btn btn-default toSettleAccounts">去结算</a>
     </div>
+    <?php else: ?>
+        <div class="alert alert-info" role="alert">
+            当前您的购物车中没有任何商品, 请先选择商品并加入到购物车, 点击 <a href="<?= \yii\helpers\Url::toRoute(['site/index']); ?>"><strong>此处</strong></a> 选择商品.
+        </div>
+	<?php endif; ?>
 </div>
 <?php
 // 更改购物车商品数量

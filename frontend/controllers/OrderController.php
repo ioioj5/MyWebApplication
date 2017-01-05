@@ -12,6 +12,10 @@ class OrderController extends FrontController {
 
 		// 购物车
 		$cartList = UserCart::getCartsByUserId ( Yii::$app->user->id );
+		// 购物车中没有选中商品
+		if( empty($cartList)) {
+			$this->redirect ( [ '/cart/index' ] );
+		}
 
 		// 收货地址列表
 		$addressList = UserAddress::getAddressListByUserId ( Yii::$app->user->id );
@@ -54,6 +58,7 @@ class OrderController extends FrontController {
 				foreach($cartList as $key=>$val) {
 					$totalMoney += $val->goods->price * $val->num;
 					$dataOrderGoods[] = [
+						'orderId'   => 0,
 						'goodsId'   => $val->goods->id,
 						'goodsName' => $val->goods->name,
 						'price'     => $val->goods->price,
@@ -117,10 +122,24 @@ class OrderController extends FrontController {
 					]
 				)->execute();
 
+				// 4. 清空购物车
+				if(! empty($cartList)) {
+					foreach($cartList as $key=>$val) {
+						Yii::$app->db->createCommand()->delete(
+							"{{%user_cart}}",
+							"`id` = {$val->id}"
+						)->execute();
+					}
+				}
+
 				$transaction->commit ();
 			}catch (\Exception $e) {
 				$transaction->rollBack ();
+
+				throw new NotFoundHttpException($e->getMessage(), 404);
 			}
+
+			$this->redirect ( [ '/site/index' ] );
 
 		}
 	}
