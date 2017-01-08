@@ -6,13 +6,18 @@ $params = array_merge (
 );
 
 return [
-	'id'                  => 'app-frontend',
+	'id'                  => 'api-frontend',
 	'basePath'            => dirname ( __DIR__ ),
 	'bootstrap'           => [
 		'log'
 	],
 	'defaultRoute'        => 'site', // 默认控制器
 	'controllerNamespace' => 'api\controllers',
+	'modules' => [
+		'v1' => [
+			'class' => 'api\module\v1',
+		],
+	],
 	'components'          => [
 		'user'         => [
 			'identityClass'   => 'common\models\User',
