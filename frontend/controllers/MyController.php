@@ -1,16 +1,13 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: ioioj5
- * Date: 2017/1/2
- * Time: 1:53
- */
-
 namespace frontend\controllers;
 
+use common\components\FrontController;
 
-class MyController {
-	public function actionIndex(){
-
+class MyController extends FrontController {
+	/**
+	 * 我的首页
+	 */
+	public function actionIndex () {
+		return $this->render ( 'index' );
 	}
 }

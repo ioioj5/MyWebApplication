@@ -1,11 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: ioioj5
- * Date: 2017/1/6
- * Time: 4:07
- */
-
 namespace backend\models;
 
 /**
@@ -18,6 +11,13 @@ class Order extends \common\models\Order {
 		parent::init();
 	}
 
+	/**
+	 * 获取订单列表
+	 * @param $limit
+	 * @param $offset
+	 *
+	 * @return array
+	 */
 	public static function getOrderList($limit, $offset){
 		$fields = parent::find()->limit($limit)->offset($offset)->orderBy('id DESC')->all();
 
@@ -27,6 +27,7 @@ class Order extends \common\models\Order {
 	}
 
 	/**
+	 * 获取一条订单记录
 	 * @param int $id
 	 *
 	 * @return array|bool|null|\yii\db\ActiveRecord
@@ -37,6 +38,10 @@ class Order extends \common\models\Order {
 		return parent::findOne($id);
 	}
 
+	/**
+	 * 获取关联orderGoods数据(一对多)
+	 * @return \yii\db\ActiveQuery
+	 */
 	public function getOrderGoods(){
 		return $this->hasMany(OrderGoods::className(), ['orderId'=>'id']);
 	}

@@ -26,7 +26,7 @@ $count = 0; // 商品数量
 			<?php if(! empty($addressList)): ?>
 				<?php foreach($addressList as $key=>$val): ?>
                     <tr>
-                        <td><input type="radio" name="addressId" value="<?= $val->id;?>" <?php if($val->isDefault == 1): ?>checked<?php endif; ?>></td>
+                        <td><input type="radio" name="addressId" value="<?= $val->id;?>" <?php if($val->isDefault == 1 or count($addressList) == 1): ?>checked<?php endif; ?>></td>
                         <td><?= $val->name; ?></td>
                         <td><?= $val->address; ?></td>
                         <td><?= $val->contact; ?></td>

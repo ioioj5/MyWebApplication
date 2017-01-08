@@ -15,10 +15,10 @@ AppAsset::register ( $this );
 <!DOCTYPE html>
 <html lang="<?= Yii::$app->language ?>">
 <head>
-	<meta charset="<?= Yii::$app->charset ?>">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="<?= Yii::$app->charset ?>">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 	<?= Html::csrfMetaTags () ?>
-	<title><?= Html::encode ( $this->title ) ?></title>
+    <title><?= Html::encode ( $this->title ) ?></title>
 	<?php $this->head () ?>
 </head>
 <body>
@@ -67,11 +67,18 @@ AppAsset::register ( $this );
 				'/cart/index'
 			]
 		];
-		$menuItems [] = '<li>' . Html::beginForm ( [
+		$menuItems [] = [
+			'label' => Yii::$app->user->identity->email,
+			'url'   => [
+				'/my/index'
+			]
+		];
+		$menuItems[]  = [
+			'label' => 'Logout',
+			'url'   => [
 				'/auth/logout'
-			], 'post' ) . Html::submitButton ( 'Logout (' . Yii::$app->user->identity->email . ')', [
-				'class' => 'btn btn-link'
-			] ) . Html::endForm () . '</li>';
+			]
+		];
 	}
 	echo Nav::widget ( [
 		'options' => [
@@ -82,19 +89,19 @@ AppAsset::register ( $this );
 	NavBar::end ();
 	?>
 
-	<div class="container">
-		<?= Breadcrumbs::widget ( [ 'links' => isset ( $this->params [ 'breadcrumbs' ] ) ? $this->params [ 'breadcrumbs' ] : [ ] ] ) ?>
+    <div class="container">
+		<?= Breadcrumbs::widget ( [ 'links' => isset ( $this->params [ 'breadcrumbs' ] ) ? $this->params [ 'breadcrumbs' ] : [] ] ) ?>
 		<?= Alert::widget () ?>
 		<?= $content ?>
-	</div>
+    </div>
 </div>
 
 <footer class="footer">
-	<div class="container">
-		<p class="pull-left">&copy; My Company <?= date ( 'Y' ) ?></p>
+    <div class="container">
+        <p class="pull-left">&copy; My Company <?= date ( 'Y' ) ?></p>
 
-		<p class="pull-right"><?= Yii::powered () ?></p>
-	</div>
+        <p class="pull-right"><?= Yii::powered () ?></p>
+    </div>
 </footer>
 
 <?php $this->endBody () ?>

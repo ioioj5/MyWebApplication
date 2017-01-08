@@ -1,11 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: ioioj5
- * Date: 2016/10/16
- * Time: 20:43
- */
-
 namespace backend\models;
 
 
@@ -30,7 +23,7 @@ class User extends \common\models\User {
 	}
 
 	/**
-	 * 删除商品
+	 * 删除用户
 	 *
 	 * @param int $id
 	 *

@@ -52,7 +52,7 @@ class OrderController extends FrontController {
 				throw new NotFoundHttpException('数据库中不存在此条收货地址信息', 404);
 			}
 			// 获取购物车中已选中的商品
-			$cartList = UserCart::getCartsByUserId ( Yii::$app->user->id );
+			$cartList = UserCart::getCartsCheckedByUserId ( Yii::$app->user->id );
 
 			if(! empty($cartList)) {
 				foreach($cartList as $key=>$val) {
@@ -66,6 +66,8 @@ class OrderController extends FrontController {
 						'postTime'  => $this->time
 					];
 				}
+			}else {
+				throw new NotFoundHttpException('购物车中不存在选中的商品', 404);
 			}
 
 			$dataOrder['price'] = $totalMoney;
