@@ -10,7 +10,9 @@ use Yii;
  * @property integer $id
  * @property string $name
  * @property string $price
+ * @property integer $stock
  * @property integer $postTime
+ * @property integer $status
  */
 class Goods extends \yii\db\ActiveRecord
 {
@@ -28,9 +30,9 @@ class Goods extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['name', 'price', 'postTime'], 'required'],
+            [['name', 'postTime'], 'required'],
             [['price'], 'number'],
-            [['postTime'], 'integer'],
+            [['stock', 'postTime', 'status'], 'integer'],
             [['name'], 'string', 'max' => 50]
         ];
     }
@@ -44,16 +46,9 @@ class Goods extends \yii\db\ActiveRecord
             'id' => 'ID',
             'name' => '商品名称',
             'price' => '商品价格',
+            'stock' => '库存',
             'postTime' => '添加时间',
+            'status' => '0-不可用, 1- 上架， 2-下架',
         ];
-    }
-
-    /**
-     * @inheritdoc
-     * @return GoodsQuery the active query used by this AR class.
-     */
-    public static function find()
-    {
-        return new GoodsQuery(get_called_class());
     }
 }

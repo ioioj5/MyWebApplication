@@ -2,6 +2,7 @@
 namespace frontend\controllers;
 
 use common\components\FrontController;
+use frontend\models\Order;
 use frontend\models\UserAddress;
 use frontend\models\UserCart;
 use Yii;
@@ -36,7 +37,7 @@ class OrderController extends FrontController {
 
 			// 初始化变量
 			$totalMoney = 0; // 商品总金额
-			$dataOrder = ['userId'=>Yii::$app->user->id, 'payStatus'=>0, 'orderStatus'=>0, 'payTime'=>0, 'postTime'=>$this->time]; // 订单表数据
+			$dataOrder = ['userId'=>Yii::$app->user->id, 'payStatus'=>0, 'orderStatus'=>1, 'payTime'=>0, 'postTime'=>$this->time]; // 订单表数据
 			$dataOrderGoods = []; // 订单商品表数据
 
 			// 检测参数
@@ -53,7 +54,6 @@ class OrderController extends FrontController {
 			}
 			// 获取购物车中已选中的商品
 			$cartList = UserCart::getCartsCheckedByUserId ( Yii::$app->user->id );
-
 			if(! empty($cartList)) {
 				foreach($cartList as $key=>$val) {
 					$totalMoney += $val->goods->price * $val->num;
@@ -80,69 +80,18 @@ class OrderController extends FrontController {
 				throw new NotFoundHttpException('生成订单号失败', 404);
 			}
 
-			$transaction = Yii::$app->db->beginTransaction ();
+			// 生成订单
 			try {
-				// 1. 生成订单
-				Yii::$app->db->createCommand()->insert(
-					"{{%order}}",
-					$dataOrder
-				)->execute();
-				$orderId = Yii::$app->db->getLastInsertID ();
-
-				if(! empty($dataOrderGoods)) {
-					foreach($dataOrderGoods as $key=>$val) {
-						$dataOrderGoods[$key]['orderId'] = $orderId;
-					}
-				}
-				// 批量插入订单商品信息
-				Yii::$app->db->createCommand()->batchInsert(
-					"{{%order_goods}}",
-					['orderId', 'goodsId', 'goodsName', 'price', 'num', 'postTime'],
-					$dataOrderGoods
-				)->execute();
-
-				// 2. 收货地址
-				Yii::$app->db->createCommand()->insert(
-					"{{%order_address}}",
-					[
-						'orderId'  => $orderId,
-						'name'     => $addressInfo->name,
-						'contact'  => $addressInfo->contact,
-						'address'  => $addressInfo->address,
-						'postTime' => $this->time
-					]
-				)->execute();
-
-				// 3. 订单日志
-				Yii::$app->db->createCommand()->insert(
-					"{{%order_log}}",
-					[
-						'userId'      => Yii::$app->user->id,
-						'orderId'     => $orderId,
-						'orderStatus' => 0,
-						'postTime'    => $this->time
-					]
-				)->execute();
-
-				// 4. 清空购物车
-				if(! empty($cartList)) {
-					foreach($cartList as $key=>$val) {
-						Yii::$app->db->createCommand()->delete(
-							"{{%user_cart}}",
-							"`id` = {$val->id}"
-						)->execute();
-					}
-				}
-
-				$transaction->commit ();
+				$return = Order::makeOrder($dataOrder, $dataOrderGoods, $addressInfo, $cartList);
 			}catch (\Exception $e) {
-				$transaction->rollBack ();
-
 				throw new NotFoundHttpException($e->getMessage(), 404);
 			}
 
-			$this->redirect ( [ '/site/index' ] );
-
+			if($return > 0) { // 订单生成成功
+				$this->redirect ( [ '/site/index' ] );
+			}else {
+				throw new NotFoundHttpException('订单生成失败', 404);
+			}
 		}
 	}
 

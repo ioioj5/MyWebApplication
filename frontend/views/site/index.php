@@ -10,11 +10,18 @@ $this->registerCssFile ( '@web/css/jquery.toast.min.css', ['depends'=>['frontend
 ?>
 <div class="site-index">
     <table class="table table-condensed table-striped">
+        <tr>
+            <td>#</td>
+            <td>商品名称</td>
+            <td>库存</td>
+            <td>操作</td>
+        </tr>
         <?php if(! empty($list['fields'])): ?>
 			<?php foreach($list['fields'] as $key=>$val): ?>
 				<tr>
 					<td><?= $val->id; ?></td>
-					<td><?= $val->name; ?></td>
+                    <td><?= $val->name; ?></td>
+                    <td><?= $val->stock; ?></td>
 					<td><a href="javascript:void(0);" class="btn btn-link addCart" data-id="<?= $val->id; ?>">加入购物车</a> <a href="javascript:void(0);" class="btn btn-link">购买</a></td>
 				</tr>
 			<?php endforeach; ?>

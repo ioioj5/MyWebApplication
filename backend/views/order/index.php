@@ -37,6 +37,7 @@ $this->registerMetaTag ( [ 'name' => 'description', 'content' => '' ] );
                             <th>订单号</th>
                             <th>价格</th>
                             <th>下单时间</th>
+                            <th>订单状态</th>
                             <th>操作</th>
                         </tr>
                         </thead>
@@ -48,6 +49,9 @@ $this->registerMetaTag ( [ 'name' => 'description', 'content' => '' ] );
                                     <td><?= $val->orderCode; ?></td>
                                     <td><?= $val->price; ?></td>
                                     <td><?= date ( 'Y-m-d H:i:s', $val->postTime ); ?></td>
+                                    <td>
+                                        <?= \backend\models\Order::orderStatus($val->orderStatus); ?>
+                                    </td>
                                     <td>
                                         <a href="<?= Url::toRoute ( [ 'order/detail', 'orderId' => $val->id ] ); ?>">订单详情</a>
                                     </td>

@@ -9,6 +9,7 @@ $this->title = '商品管理' . Yii::$app->params[ 'siteName' ];
 $this->registerMetaTag ( [ 'name' => 'keywords', 'content' => '' ] );
 // 设置description
 $this->registerMetaTag ( [ 'name' => 'description', 'content' => '' ] );
+$this->registerCssFile ( '@web/css/jquery.toast.min.css', ['depends'=>['frontend\assets\AppAsset']]);
 ?>
 <div class="templatemo-content-wrapper">
 	<div class="templatemo-content">
@@ -35,9 +36,10 @@ $this->registerMetaTag ( [ 'name' => 'description', 'content' => '' ] );
 						<thead>
 						<tr>
 							<th>#</th>
-							<th>name</th>
-							<th>price</th>
-							<th>time</th>
+							<th>商品名称</th>
+                            <th>商品价格</th>
+                            <th>商品库存</th>
+							<th>添加时间</th>
 							<th>Action</th>
 						</tr>
 						</thead>
@@ -48,12 +50,13 @@ $this->registerMetaTag ( [ 'name' => 'description', 'content' => '' ] );
 							<td><?= $val->id; ?></td>
 							<td><?= $val->name; ?></td>
 							<td><?= $val->price; ?></td>
+                            <td><?= $val->stock; ?></td>
 							<td><?= date('Y-m-d H:i:s', $val->postTime); ?></td>
 							<td>
 								<?php if($val->status == 0 or $val->status == 2): ?>
-									<a href="">上架</a>
+									<a href="javascript:void(0);" class="shelve" data-id="<?= $val->id; ?>">上架</a>
 								<?php elseif($val->status == 1): ?>
-									<a href="">下架</a>
+									<a href="javascript:void(0);" class="off-shelve" data-id="<?= $val->id; ?>">下架</a>
 								<?php endif; ?>
 								<a href="<?= Url::toRoute(['goods/add', 'goodsId'=>$val->id]); ?>" class="btn btn-link">编辑</a>
 								<a href="<?= Url::toRoute(['goods/delete', 'goodsId'=>$val->id]); ?>" class="btn btn-link">删除</a>
@@ -71,3 +74,45 @@ $this->registerMetaTag ( [ 'name' => 'description', 'content' => '' ] );
 		</div>
 	</div>
 </div>
+<?php
+// AJAX: 更改商品上下架状态
+$ajaxGoodsStatusUrl = Url::toRoute('goods/ajax-status');
+
+$js = <<< JS
+    // 上架, 下架
+    $(".shelve,.off-shelve").click(function(){
+        var goodsId = $(this).data('id'); // 商品id
+        
+        if(goodsId < 1) {
+            $.toast({
+                text:"缺少商品Id",
+                position: 'bottom-right',
+            });
+            return false;
+        }
+        
+        $.ajax({
+            url: '{$ajaxGoodsStatusUrl}',
+            data: {goodsId:goodsId},
+            type: 'post',
+            cache: false,
+            dataType: 'json',
+            
+            success: function(response){
+                if(response.code == 0) {
+                    window.location.reload();
+                }
+                $.toast({
+                    text:response.msg,
+                    position: 'bottom-right',
+                });
+            },
+            error: function(jqXHR, textStatus, errorThrown){
+                console.log('异常: ' + jqXHR.responseText + jqXHR.status + jqXHR.readyState + jqXHR.statusText);
+                console.log('textStatus: ' + textStatus);
+                console.log('errorThrown: ' + errorThrown);
+            }
+        });
+    });
+JS;
+$this->registerJs($js);

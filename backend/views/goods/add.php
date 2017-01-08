@@ -28,15 +28,16 @@ $this->registerMetaTag ( [ 'name' => 'description', 'content' => '' ] );
 					<li role="presentation" class="active"><a href="<?= Url::toRoute('goods/add')?>">添加商品</a></li>
 				</ul>
 
-				<?php $form = ActiveForm::begin(['id' => 'login-form']); ?>
-					<div class="row">
-						<div class="col-md-6 margin-bottom-15">
-							<?= $form->field($model, 'name')->textInput() ?>
-						</div>
-						<div class="col-md-6 margin-bottom-15">
-							<?= $form->field($model, 'price')->textInput() ?>
-						</div>
-					</div>
+				<?php $form = ActiveForm::begin(['id' => 'login-form', 'class'=>'form-control']); ?>
+                    <div class="form-group">
+                        <?= $form->field($model, 'name')->textInput() ?>
+                    </div>
+                    <div class="form-group">
+                        <?= $form->field($model, 'price')->textInput() ?>
+                    </div>
+                    <div class="form-group">
+                        <?= $form->field($model, 'stock')->textInput() ?>
+                    </div>
 
 					<div class="row templatemo-form-buttons">
 						<div class="col-md-12">

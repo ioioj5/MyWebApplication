@@ -26,7 +26,7 @@ $this->registerMetaTag ( [ 'name' => 'description', 'content' => '' ] );
                 <div class="panel panel-default">
                     <div class="panel-heading">订单详情</div>
                     <div class="panel-body">
-                        Panel content
+                        订单状态: <?= \backend\models\Order::orderStatus($orderInfo->orderStatus); ?>
                     </div>
                     <table class="table">
                         <tr>

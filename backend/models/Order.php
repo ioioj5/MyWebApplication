@@ -11,6 +11,32 @@ class Order extends \common\models\Order {
 		parent::init();
 	}
 
+
+	/**
+	 * 返回订单状态
+	 * @param int $orderStatus
+	 *
+	 * @return string
+	 */
+	public static function orderStatus($orderStatus = 0) {
+		if($orderStatus < 1) return '';
+
+		if($orderStatus == 1) {
+			return '等待付款';
+		}elseif($orderStatus == 2) {
+			return '付款成功';
+		}elseif($orderStatus == 3) {
+			return '等待审核';
+		}elseif($orderStatus == 4) {
+			return '等待发货';
+		}elseif($orderStatus == 5) {
+			return '已发货';
+		}elseif($orderStatus == 6) {
+			return '交易成功';
+		}elseif($orderStatus == 7) {
+			return '交易关闭';
+		}
+	}
 	/**
 	 * 获取订单列表
 	 * @param $limit

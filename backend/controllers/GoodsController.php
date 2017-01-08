@@ -15,6 +15,7 @@ use yii\web\NotFoundHttpException;
  * @package backend\controllers
  */
 class GoodsController extends AdminBaseController {
+	public $enableCsrfValidation = false;
 	/**
 	 * 商品列表
 	 * @return string
@@ -72,9 +73,51 @@ class GoodsController extends AdminBaseController {
 	/**
 	 * 上下架操作
 	 */
-	public function actionStatus(){
-		$goodsId = intval(Yii::$app->request->get('goodsId'));
+	public function actionAjaxStatus(){
+		if(Yii::$app->request->isAjax) {
+			$goodsId = intval(Yii::$app->request->post('goodsId'));
 
+			// 检测参数
+			if($goodsId < 1) {
+				$this->response['code'] = 1;
+				$this->response['msg'] = '缺少商品参数';
+
+				return json_encode($this->response);
+			}
+
+			// 检测商品是否存在
+			$goods = Goods::findOne($goodsId);
+			if( empty($goods)) {
+				$this->response['code'] = 1;
+				$this->response['msg'] = '商品不存在';
+
+				return json_encode($this->response);
+			}
+			$dataGoods = [];
+
+			if($goods->status != 1) {
+				$dataGoods['status'] = 1;
+			}else {
+				$dataGoods['status'] = 2;
+			}
+
+			$return = Yii::$app->db->createCommand()->update(
+				"{{%goods}}",
+				$dataGoods,
+				"`id` = '{$goodsId}'"
+			)->execute();
+			if($return){
+				$this->response['code'] = 0;
+				$this->response['msg'] = '操作成功';
+
+				return json_encode($this->response);
+			}else {
+				$this->response['code'] = 1;
+				$this->response['msg'] = '操作失败';
+
+				return json_encode($this->response);
+			}
+		}
 	}
 
 	/**
