@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net
 --
 -- 主机: localhost
--- 生成日期: 2017-01-09 04:58:25
+-- 生成日期: 2017-01-21 23:29:57
 -- 服务器版本: 5.6.30
 -- PHP 版本: 5.5.37
 
@@ -47,6 +47,18 @@ INSERT INTO `tbl_admin` (`id`, `username`, `email`, `password`, `token`, `addtim
 -- --------------------------------------------------------
 
 --
+-- 表的结构 `tbl_coupons`
+--
+
+CREATE TABLE IF NOT EXISTS `tbl_coupons` (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '优惠券id',
+  `code` char(43) NOT NULL COMMENT '优惠券编码',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='优惠券表' AUTO_INCREMENT=1 ;
+
+-- --------------------------------------------------------
+
+--
 -- 表的结构 `tbl_goods`
 --
 
@@ -65,10 +77,24 @@ CREATE TABLE IF NOT EXISTS `tbl_goods` (
 --
 
 INSERT INTO `tbl_goods` (`id`, `name`, `price`, `stock`, `postTime`, `status`) VALUES
-(4, '第二件商品', '2.00', 100, 1483902842, 2),
-(6, '第三件商品', '1.00', 100, 1483905331, 2),
-(7, '第四件商品', '1.00', 100, 1483905317, 2),
-(8, '第五件商品', '1.10', 100, 1483902847, 2);
+(4, '第二件商品', '2.00', 100, 1483902842, 1),
+(6, '第三件商品', '1.00', 100, 1483905331, 1),
+(7, '第四件商品', '1.00', 100, 1483905317, 1),
+(8, '第五件商品', '1.10', 100, 1483902847, 1);
+
+-- --------------------------------------------------------
+
+--
+-- 表的结构 `tbl_goods_tags`
+--
+
+CREATE TABLE IF NOT EXISTS `tbl_goods_tags` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `goodsId` int(11) NOT NULL COMMENT '商品id',
+  `tagId` int(11) NOT NULL COMMENT '标签id',
+  `postTime` int(11) NOT NULL DEFAULT '0' COMMENT '添加时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='商品标签关联表' AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -171,6 +197,28 @@ CREATE TABLE IF NOT EXISTS `tbl_order_log` (
 INSERT INTO `tbl_order_log` (`id`, `userId`, `orderId`, `orderStatus`, `postTime`) VALUES
 (1, 1, 3, 0, 1483905334),
 (2, 1, 4, 0, 1483905524);
+
+-- --------------------------------------------------------
+
+--
+-- 表的结构 `tbl_tags`
+--
+
+CREATE TABLE IF NOT EXISTS `tbl_tags` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `tagName` varchar(50) NOT NULL COMMENT '标签名称',
+  `postTime` int(10) NOT NULL DEFAULT '0' COMMENT '添加时间',
+  `status` tinyint(1) NOT NULL DEFAULT '1' COMMENT '0-不可用, 1-可用',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='标签表' AUTO_INCREMENT=6 ;
+
+--
+-- 转存表中的数据 `tbl_tags`
+--
+
+INSERT INTO `tbl_tags` (`id`, `tagName`, `postTime`, `status`) VALUES
+(1, '啊飒飒的', 1485004364, 1),
+(5, '1111', 1485012578, 1);
 
 -- --------------------------------------------------------
 
