@@ -1,6 +1,7 @@
 <?php
 namespace backend\controllers;
 
+use app\models\GoodsTags;
 use backend\models\Goods;
 use common\components\AdminBaseController;
 use Yii;
@@ -65,9 +66,10 @@ class GoodsController extends AdminBaseController {
 			$model = Goods::findOne ( $goodsId );
 		} else {
 			$model = new Goods();
+			$goodsTags = new GoodsTags();
 		}
 
-		return $this->render ( 'add', [ 'model' => $model ] );
+		return $this->render ( 'add', [ 'model' => $model, 'goodsTags'=>$goodsTags ] );
 	}
 
 	/**
