@@ -1,8 +1,9 @@
 <?php
 namespace backend\controllers;
 
-use app\models\GoodsTags;
+use backend\models\GoodsTags;
 use backend\models\Goods;
+use backend\models\Tags;
 use common\components\AdminBaseController;
 use Yii;
 use yii\base\ErrorException;
@@ -67,9 +68,10 @@ class GoodsController extends AdminBaseController {
 		} else {
 			$model = new Goods();
 			$goodsTags = new GoodsTags();
+			$tags = Tags::getTagsListByLimit(10);
 		}
 
-		return $this->render ( 'add', [ 'model' => $model, 'goodsTags'=>$goodsTags ] );
+		return $this->render ( 'add', [ 'model' => $model, 'goodsTags'=>$goodsTags, 'tags'=>$tags ] );
 	}
 
 	/**

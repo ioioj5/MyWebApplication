@@ -1,11 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: ioioj5
- * Date: 2017/1/23
- * Time: 15:03
- */
-
 namespace backend\models;
 
 

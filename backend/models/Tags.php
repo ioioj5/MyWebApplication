@@ -23,6 +23,21 @@ class Tags extends \common\models\Tags {
 	}
 
 	/**
+	 * 获取标签列表
+	 * @param $limit
+	 *
+	 * @return array|\yii\db\ActiveRecord[]
+	 */
+	public static function getTagsListByLimit($limit = 0){
+
+		$list = parent::find()->where(['status'=>1])->limit($limit)->orderBy('id DESC')->all();
+
+
+		return $list;
+	}
+
+
+	/**
 	 * 删除标签
 	 * @param int $id
 	 *
