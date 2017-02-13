@@ -57,6 +57,7 @@ class AjaxController extends FrontController {
 				$cartInfo->userId   = Yii::$app->user->id;
 				$cartInfo->goodsId  = $goodsId;
 				$cartInfo->num      = 1;
+				$cartInfo->isChecked = 1; // 默认选中
 				$cartInfo->postTime = $this->time;
 				$cartInfo->save ();
 			} else { // 已存在
