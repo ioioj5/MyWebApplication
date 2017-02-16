@@ -2,17 +2,102 @@
 namespace frontend\controllers;
 
 use common\components\FrontController;
+use frontend\models\Goods;
 use frontend\models\Order;
 use frontend\models\UserAddress;
 use frontend\models\UserCart;
 use Yii;
+use yii\db\Expression;
 use yii\web\NotFoundHttpException;
 
 class OrderController extends FrontController {
+
+	public function actionHandle(){
+		$goodsId = intval(Yii::$app->request->get('goodsId'));
+		if($goodsId > 0) { // 直接购买
+			// 检测商品是否存在
+			$goodsInfo = Goods::getOne ( $goodsId );
+			if ( empty( $goodsInfo ) ) {
+				throw new NotFoundHttpException('数据库中不存在此商品记录', 404);
+			}
+			// 检测商品上架状态
+			if($goodsInfo->status != 1) {
+				throw new NotFoundHttpException('商品未上架', 404);
+			}
+			// 检测商品库存
+			if($goodsInfo->stock < 1) {
+				throw new NotFoundHttpException('商品库存不足', 404);
+			}
+
+			$transaction = Yii::$app->db->beginTransaction ();
+			try {
+				// 取消选择购物车中已选择的商品
+				Yii::$app->db->createCommand()->update(
+					"{{%user_cart}}",
+					['isChecked'=>0],
+					"`userId` = " . Yii::$app->user->id
+				)->execute();
+				// 检测购物车中是否存在
+				$cartInfo = UserCart::getOne ( $goodsId, Yii::$app->user->id );
+				if ( empty( $cartInfo ) ) {
+					Yii::$app->db->createCommand()->insert(
+						"{{%user_cart}}",
+						[
+							'userId'    => Yii::$app->user->id,
+							'goodsId'   => $goodsId,
+							'num'       => 1,
+							'isChecked' => 1,
+							'postTime'  => $this->time
+						]
+					)->execute();
+				} else {
+					Yii::$app->db->createCommand()->update(
+						"{{%user_cart}}",
+						[
+							'num'=> new Expression( '`num` + 1' ),
+							'isChecked' => 1
+						],
+						"`id` = '{$cartInfo->id}' AND `userId` = " . Yii::$app->user->id
+					)->execute();
+				}
+
+				$transaction->commit();
+			}catch (\Exception $e) {
+				$transaction->rollBack();
+				$this->redirect ( [ '/cart/index' ] );
+			}
+
+			$this->redirect ( [ '/order/index' ] );
+		}else { // 购物车
+			// 购物车
+			$cartList = UserCart::getCartsByUserId ( Yii::$app->user->id );// 购物车中没有选中商品
+			if( empty($cartList)) {
+				$this->redirect ( [ '/cart/index' ] );
+			}
+
+			$transaction = Yii::$app->db->beginTransaction ();
+			try {
+				foreach ( $cartList as $key => $val ) {
+					if ( $val->goods->stock < 1 ) {
+						Yii::$app->db->createCommand ()->update (
+							"{{%user_cart}}",
+							[ 'isChecked' => 0 ],
+							"`id` = '{$val->id}' AND `userId` = " . Yii::$app->user->id
+						)->execute ();
+					}
+				}
+				$transaction->commit();
+			}catch (\Exception $e) {
+				$transaction->rollBack();
+				$this->redirect ( [ '/cart/index' ] );
+			}
+			$this->redirect ( [ '/order/index' ] );
+		}
+	}
 	public function actionIndex () {
 
 		// 购物车
-		$cartList = UserCart::getCartsByUserId ( Yii::$app->user->id );
+		$cartList = UserCart::getCartsCheckedByUserId ( Yii::$app->user->id );
 		// 购物车中没有选中商品
 		if( empty($cartList)) {
 			$this->redirect ( [ '/cart/index' ] );

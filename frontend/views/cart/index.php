@@ -25,17 +25,15 @@ $this->registerCssFile ( '@web/css/jquery.toast.min.css', [ 'depends' => [ 'fron
                         <td><?= $val->goods->price; ?></td>
                         <td id="goodsNum<?= $val[ 'id' ]; ?>"><?= $val[ 'num' ]; ?></td>
                         <td>
-							<?php if ( $val->goods->stock > 0 ): ?>
-                                <a href="javascript:void(0);" class="btn btn-link minusCart" data-id="<?= $val[ 'id' ]; ?>">-</a>
-                                <a href="javascript:void(0);" class="btn btn-link plusCart" data-id="<?= $val[ 'id' ]; ?>">+</a>
-							<?php endif; ?>
-                            <a href="javascript:void(0);" class="removeCart btn btn-link removeCart" data-id="<?= $val[ 'id' ]; ?>">删除全部</a>
+                            <a href="javascript:void(0);" class="btn btn-link minusCart" data-id="<?= $val[ 'id' ]; ?>">-</a>
+                            <a href="javascript:void(0);" class="btn btn-link plusCart" data-id="<?= $val[ 'id' ]; ?>">+</a>
+                            <a href="javascript:void(0);" class="removeCart btn btn-link removeCart" data-id="<?= $val[ 'id' ]; ?>">删除</a>
                         </td>
                     </tr>
 				<?php endforeach; ?>
             </table>
             <div class="pull-right">
-                <a href="<?= \yii\helpers\Url::toRoute ( [ 'order/index' ] ); ?>" class="btn btn-default toSettleAccounts">去结算</a>
+                <a href="<?= \yii\helpers\Url::toRoute ( [ 'order/handle' ] ); ?>" class="btn btn-default toSettleAccounts">去结算</a>
             </div>
 		<?php else: ?>
             <div class="alert alert-info" role="alert">
@@ -127,8 +125,15 @@ $(".plusCart").click(function(){
 	    
 	    success: function(response){
 	        if(response.code == 1) {
-	            console.log(response.msg);
+	            $.toast({
+					text:response.msg,
+					position: 'bottom-right',
+				});
 	        }else {
+	            $.toast({
+					text:response.msg,
+					position: 'bottom-right',
+				});
 	            $("#goodsNum" + cartId).text(response.data.num);
 	        }
 	    },

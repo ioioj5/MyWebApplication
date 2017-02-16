@@ -73,4 +73,9 @@ class UserCart extends \common\models\UserCart {
 
 		return parent::find()->where(['goodsId'=>$goodsId, 'userId'=>$userId])->one();
 	}
+
+	public static function getOneById($id, $userId = 0) {
+
+		return parent::find()->where(['id'=>$id, 'userId'=>$userId])->one();
+	}
 }

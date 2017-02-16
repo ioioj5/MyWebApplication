@@ -12,9 +12,10 @@ class GoodsController extends Controller {
 	public function actionInitialize() {
 		Yii::$app->db->createCommand()->update(
 			"{{%goods}}",
-			['stock'=>100],
+			['stock'=>10, 'ver'=>0],
 			'`id` > 0'
 		)->execute();
+		return 0;
 	}
 
 }

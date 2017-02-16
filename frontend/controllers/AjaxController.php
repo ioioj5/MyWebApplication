@@ -110,7 +110,7 @@ class AjaxController extends FrontController {
 			}
 
 			// 检测购物车中是否存在此条记录
-			$cart = UserCart::find ()->where ( [ 'id' => $cartId ] )->one ();
+			$cart = UserCart::getOneById($cartId, Yii::$app->user->id);
 			if ( empty( $cart ) ) {
 				$this->response[ 'code' ] = 1;
 				$this->response[ 'msg' ]  = '数据库中不存在此条购物车记录';
@@ -120,6 +120,12 @@ class AjaxController extends FrontController {
 
 
 			if ( $act == 'plus' ) {
+				if($cart->num + 1 > $cart->goods->stock) {
+					$this->response[ 'code' ] = 1;
+					$this->response[ 'msg' ]  = '商品库存不足';
+
+					return json_encode ( $this->response );
+				}
 				$cart->num += 1;
 				$cart->save ();
 				$this->response[ 'data' ] = [ 'num' => $cart->num ];

@@ -22,7 +22,7 @@ $this->registerCssFile ( '@web/css/jquery.toast.min.css', ['depends'=>['frontend
 					<td><?= $val->id; ?></td>
                     <td><?= $val->name; ?></td>
                     <td><?= $val->stock; ?></td>
-					<td><a href="javascript:void(0);" class="btn btn-link addCart" data-id="<?= $val->id; ?>">加入购物车</a> <a href="javascript:void(0);" class="btn btn-link">购买</a></td>
+					<td><a href="javascript:void(0);" class="btn btn-link addCart" data-id="<?= $val->id; ?>">加入购物车</a> <a href="<?= \yii\helpers\Url::toRoute(['order/handle', 'goodsId'=>$val->id])?>" class="btn btn-link">购买</a></td>
 				</tr>
 			<?php endforeach; ?>
 		<?php endif; ?>
