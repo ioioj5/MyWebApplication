@@ -49,6 +49,20 @@ class AjaxController extends FrontController {
 
 				return json_encode ( $this->response );
 			}
+			// 检测商品上架状态
+			if($goodsInfo->status != 1) {
+				$this->response['code'] = 1;
+				$this->response['msg'] = '商品未上架';
+
+				return json_encode($this->response);
+			}
+			// 检测商品库存
+			if($goodsInfo->stock < 1) {
+				$this->response['code'] = 1;
+				$this->response['msg'] = '商品库存不足';
+
+				return json_encode($this->response);
+			}
 
 			// 检测购物车中是否已存在此商品的记录
 			$cartInfo = UserCart::getOne ( $goodsId, Yii::$app->user->id );
@@ -245,7 +259,7 @@ class AjaxController extends FrontController {
 
 				return json_encode ( $this->response );
 			}
-
+			// 获取购物车信息
 			$userCart = UserCart::find ()->where ( [ 'id' => $cartId, 'userId' => Yii::$app->user->id ] )->one ();
 
 			if ( empty( $userCart ) ) {
@@ -254,6 +268,29 @@ class AjaxController extends FrontController {
 
 				return json_encode ( $this->response );
 			}
+			// @TODO: 检查商品库存
+			$goods = Goods::getOne($userCart->goodsId);
+			if(empty($goods)) {
+				$this->response['code'] = 1;
+				$this->response['msg'] = '商品不存在';
+
+				return json_encode($this->response);
+			}
+			// 检测商品上架状态
+			if($goods->status != 1) {
+				$this->response['code'] = 1;
+				$this->response['msg'] = '商品未上架';
+
+				return json_encode($this->response);
+			}
+			// 检测商品库存
+			if($goods->stock < 1) {
+				$this->response['code'] = 1;
+				$this->response['msg'] = '商品库存不足';
+
+				return json_encode($this->response);
+			}
+
 			// 组织数据
 			$data = [ 'updateTime' => $this->time ];
 			if ( isset( $userCart->isChecked ) and $userCart->isChecked == 0 ) {

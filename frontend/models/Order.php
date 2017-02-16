@@ -55,19 +55,23 @@ class Order extends \common\models\Order {
 			// 处理库存
 			foreach($dataOrderGoods as $key=>$val) {
 				// 检查库存
-				$sql = "SELECT `stock` FROM {{%goods}} WHERE `id` = '{$val['goodsId']}'";
-				$stock = Yii::$app->db->createCommand($sql)->queryScalar();
-				if($stock - $val['num'] < 0) {
+				$sql = "SELECT `stock`, `ver` FROM {{%goods}} WHERE `id` = '{$val['goodsId']}'";
+				$result = Yii::$app->db->createCommand($sql)->queryOne();
+				if($result['stock'] - $val['num'] < 0) {
 					throw new \Exception("存在库存不足的商品");
 				}
 				// 减去库存
-				Yii::$app->db->createCommand()->update(
+				$res = Yii::$app->db->createCommand()->update(
 					"{{%goods}}",
 					[
 						'stock'   => new Expression( '`stock` - ' . $val['num'] ),
+						'ver'	  => new Expression('`ver` + 1')
 					],
-					"`id` = '{$val['goodsId']}'"
+					"`id` = '{$val['goodsId']}' AND `ver` = '{$result['ver']}'"
 				)->execute();
+				if($res != 1) {
+					throw new \Exception("事务提交失败, 订单未生成.");
+				}
 			}
 
 			// 2. 收货地址
