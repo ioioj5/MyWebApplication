@@ -57,7 +57,7 @@ class Order extends \common\models\Order {
 				// 检查库存
 				$sql = "SELECT `stock` FROM {{%goods}} WHERE `id` = '{$val['goodsId']}'";
 				$stock = Yii::$app->db->createCommand($sql)->queryScalar();
-				if($stock - $val['num'] <= 0) {
+				if($stock - $val['num'] < 0) {
 					throw new \Exception("存在库存不足的商品");
 				}
 				// 减去库存
