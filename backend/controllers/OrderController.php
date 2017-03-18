@@ -26,8 +26,9 @@ class OrderController extends AdminBaseController {
 		$limit  = 20;
 		$offset = ( $page - 1 ) * $limit;
 		$params = array ( 'goods/index', 'page' => '{page}' ); // 生成URL参数数组
+		$condition = [];
 
-		$list      = Order::getOrderList($limit, $offset);
+		$list      = Order::getOrderList($condition, $limit, $offset);
 		$totalPage = ceil ( $list[ 'count' ] / $limit );
 		$link      = Url::toRoute ( $params ); //$this->createUrl ( 'admin/index', $params ); // '/page/{page}';
 		$navbar    = $this->pager ( $page, $limit, $list[ 'count' ], $link, 'active', '' );

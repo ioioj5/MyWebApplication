@@ -1,5 +1,6 @@
 <?php
 namespace backend\models;
+use common\models\OrderLog;
 
 /**
  * 订单相关操作类
@@ -37,15 +38,28 @@ class Order extends \common\models\Order {
 			return '交易关闭';
 		}
 	}
+
 	/**
 	 * 获取订单列表
-	 * @param $limit
-	 * @param $offset
+	 *
+	 * @param array $condition
+	 * @param       $limit
+	 * @param       $offset
 	 *
 	 * @return array
 	 */
-	public static function getOrderList($limit, $offset){
-		$fields = parent::find()->limit($limit)->offset($offset)->orderBy('id DESC')->all();
+	public static function getOrderList($condition = [], $limit = 0, $offset = 0){
+		$query = parent::find();
+		if(! empty($condition)) {
+			$query->where($condition);
+		}
+		if($limit > 0) {
+			$query->limit($limit);
+		}
+		if($limit > 0 and $offset >= 0) {
+			$query->off($offset);
+		}
+		$fields = $query->orderBy('id DESC')->all();
 
 		$count = parent::find()->count();
 
@@ -70,5 +84,13 @@ class Order extends \common\models\Order {
 	 */
 	public function getOrderGoods(){
 		return $this->hasMany(OrderGoods::className(), ['orderId'=>'id']);
+	}
+
+	/**
+	 * 获取关联orderLog数据
+	 * @return \yii\db\ActiveQuery
+	 */
+	public function getOrderLog(){
+		return $this->hasOne(OrderLog::className(), ['orderId'=>'id'])->where('orderStatus = :orderStatus', ['orderStatus'=>7]);
 	}
 }

@@ -51,6 +51,9 @@ $this->registerMetaTag ( [ 'name' => 'description', 'content' => '' ] );
                                     <td><?= date ( 'Y-m-d H:i:s', $val->postTime ); ?></td>
                                     <td>
                                         <?= \backend\models\Order::orderStatus($val->orderStatus); ?>
+                                        <?php if($val->orderStatus == 7): ?>
+                                            ( <?= $val->orderLog->remarks; ?> )
+                                        <?php endif; ?>
                                     </td>
                                     <td>
                                         <a href="<?= Url::toRoute ( [ 'order/detail', 'orderId' => $val->id ] ); ?>">订单详情</a>
