@@ -61,7 +61,11 @@ class Order extends \common\models\Order {
 		}
 		$fields = $query->orderBy('id DESC')->all();
 
-		$count = parent::find()->count();
+		$query = parent::find();
+		if(! empty($condition)) {
+			$query->where($condition);
+		}
+		$count = $query->count();
 
 		return ['fields'=>$fields, 'count'=>$count];
 	}

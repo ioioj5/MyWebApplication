@@ -9,10 +9,10 @@ class GoodsController extends Controller {
 	/**
 	 * 初始化商品数据
 	 */
-	public function actionInitialize() {
+	public function actionInit() {
 		Yii::$app->db->createCommand()->update(
 			"{{%goods}}",
-			['stock'=>10, 'ver'=>0],
+			['stock'=>100, 'ver'=>0],
 			'`id` > 0'
 		)->execute();
 		return 0;

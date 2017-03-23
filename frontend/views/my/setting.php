@@ -5,30 +5,32 @@ use yii\helpers\Html;
 
 
 $this->title = 'Index';
-$this->params['breadcrumbs'][] = $this->title;
+//$this->params['breadcrumbs'][] = $this->title;
+$this->params[ 'breadcrumbs' ] = [
+	[
+		'label' => 'My',
+		'url'   => \yii\helpers\Url::toRoute ( [ 'my/index' ] )
+	],
+	[ 'label' => 'Setting' ]
+];
 $this->registerCssFile ( '@web/css/jquery.toast.min.css', ['depends'=>['frontend\assets\AppAsset']]);
 ?>
 <div class="site-index">
-    <table class="table table-condensed table-striped">
-        <tr>
-            <td>#</td>
-            <td>商品名称</td>
-            <td>价格</td>
-            <td>库存</td>
-            <td>操作</td>
-        </tr>
-        <?php if(! empty($list['fields'])): ?>
-			<?php foreach($list['fields'] as $key=>$val): ?>
-				<tr>
-					<td><?= $val->id; ?></td>
-                    <td><?= $val->name; ?></td>
-                    <td><?= $val->price; ?></td>
-                    <td><?= $val->stock; ?></td>
-					<td><a href="javascript:void(0);" class="btn btn-link addCart" data-id="<?= $val->id; ?>">加入购物车</a> <a href="<?= \yii\helpers\Url::toRoute(['order/handle', 'goodsId'=>$val->id])?>" class="btn btn-link">购买</a></td>
-				</tr>
-			<?php endforeach; ?>
-		<?php endif; ?>
-    </table>
+    <div class="row">
+        <!-- 我的订单 -->
+        <div class="col-lg-3 col-md-6">
+            <div class="panel panel-yellow">
+                <a href="<?= \yii\helpers\Url::toRoute(['my/address']); ?>">
+                    <div class="panel-footer">
+                        <span class="pull-left">address</span>
+                        <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                        <div class="clearfix"></div>
+                    </div>
+                </a>
+            </div>
+        </div>
+        <!-- 我的订单 -->
+    </div>
 </div>
 
 <?php

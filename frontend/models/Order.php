@@ -1,5 +1,7 @@
 <?php
 namespace frontend\models;
+use common\models\OrderGoods;
+use common\models\OrderLog;
 use Yii;
 use yii\db\Expression;
 
@@ -14,6 +16,65 @@ class Order extends \common\models\Order {
 		parent::init ();
 	}
 
+	/**
+	 * 获取订单列表
+	 *
+	 * @param array $condition
+	 * @param       $limit
+	 * @param       $offset
+	 *
+	 * @return array
+	 * @internal param int $userId
+	 */
+	public static function getOrderList($condition = [], $limit, $offset){
+		$query = parent::find();
+		if(! empty($condition)) {
+			$query->where($condition);
+		}
+		if($limit > 0) {
+			$query->limit($limit);
+		}
+		if($limit > 0 and $offset >= 0) {
+			$query->off($offset);
+		}
+		$fields = $query->orderBy('id DESC')->all();
+
+		$query = parent::find();
+		if(! empty($condition)) {
+			$query->where($condition);
+		}
+		$count = $query->count();
+
+		return ['fields'=>$fields, 'count'=>$count];
+	}
+
+	/**
+	 * 获取一条订单信息
+	 *
+	 * @param int $orderId
+	 *
+	 * @return null|static
+	 *
+	 */
+	public static function getOne($orderId = 0) {
+		return parent::find()->where(['id'=>$orderId])->one();
+	}
+
+	/**
+	 * 获取关联orderGoods数据(一对多)
+	 * @return \yii\db\ActiveQuery
+	 */
+	public function getOrderGoods(){
+		return $this->hasMany(OrderGoods::className(), ['orderId'=>'id']);
+	}
+
+	/**
+	 * 获取关联orderLog数据
+	 * @return \yii\db\ActiveQuery
+	 */
+	public function getOrderLog(){
+		return $this->hasOne(OrderLog::className(), ['orderId'=>'id'])->where('orderStatus = :orderStatus', ['orderStatus'=>7]);
+	}
 	/**
 	 * 生成订单
 	 *

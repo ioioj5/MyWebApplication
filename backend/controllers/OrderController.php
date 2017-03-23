@@ -25,7 +25,7 @@ class OrderController extends AdminBaseController {
 
 		$limit  = 20;
 		$offset = ( $page - 1 ) * $limit;
-		$params = array ( 'goods/index', 'page' => '{page}' ); // 生成URL参数数组
+		$params = array ( 'order/index', 'page' => '{page}' ); // 生成URL参数数组
 		$condition = [];
 
 		$list      = Order::getOrderList($condition, $limit, $offset);
