@@ -52,7 +52,7 @@ $this->registerMetaTag ( [ 'name' => 'description', 'content' => '' ] );
                                     <td>
                                         <?= \backend\models\Order::orderStatus($val->orderStatus); ?>
                                         <?php if($val->orderStatus == 7): ?>
-                                            ( <?= $val->orderLog->remarks; ?> )
+                                            ( <?= $val->orderCloseReasonLog->remarks; ?> )
                                         <?php endif; ?>
                                     </td>
                                     <td>

@@ -28,7 +28,7 @@ $this->registerMetaTag ( [ 'name' => 'description', 'content' => '' ] );
                     <div class="panel-body">
                         订单状态: <?= \backend\models\Order::orderStatus($orderInfo->orderStatus); ?>
 						<?php if($orderInfo->orderStatus == 7): ?>
-                            ( <?= $orderInfo->orderLog->remarks; ?> )
+                            ( <?= $orderInfo->orderCloseReasonLog->remarks; ?> )
 						<?php endif; ?>
                     </div>
                     <table class="table">
@@ -53,6 +53,31 @@ $this->registerMetaTag ( [ 'name' => 'description', 'content' => '' ] );
                     </table>
                 </div>
 
+                <div class="panel panel-default">
+                    <div class="panel-heading">订单日志</div>
+                    <div class="panel-body">
+                        订单日志
+                    </div>
+                    <table class="table">
+                        <tr>
+                            <td width="20%">时间</td>
+                            <td>状态/原因</td>
+                        </tr>
+						<?php if(isset($orderInfo->orderLog) and ! empty($orderInfo->orderLog)):?>
+							<?php foreach($orderInfo->orderLog as $val):?>
+                                <tr>
+                                    <td><?= date('Y-m-d H:i:s', $val->postTime); ?></td>
+                                    <td>
+										<?= \backend\models\Order::orderStatus($val->orderStatus); ?>
+										<?php if(isset($val->remarks) and ! empty($val->remarks)):?>
+											( <?= $val->remarks; ?> )
+										<?php endif; ?>
+                                    </td>
+                                </tr>
+							<?php endforeach; ?>
+						<?php endif; ?>
+                    </table>
+                </div>
             </div>
         </div>
     </div>

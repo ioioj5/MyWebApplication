@@ -11,7 +11,7 @@ class OrderController extends ConsoleBaseController {
 	 * 未支付订单过期时间/有效期
 	 * @var int
 	 */
-	public $unPaidOrderExpireTime = 1800;
+	public $unPaidOrderExpireTime = 10;
 
 	/**
 	 * 自动确认订单有效期

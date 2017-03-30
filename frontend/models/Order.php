@@ -153,7 +153,7 @@ class Order extends \common\models\Order {
 				[
 					'userId'      => Yii::$app->user->id,
 					'orderId'     => $orderId,
-					'orderStatus' => 0,
+					'orderStatus' => 1,
 					'postTime'    => $time
 				]
 			)->execute ();

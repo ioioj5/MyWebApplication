@@ -67,11 +67,11 @@ class GoodsController extends AdminBaseController {
 			$model = Goods::findOne ( $goodsId );
 		} else {
 			$model = new Goods();
-			$goodsTags = new GoodsTags();
-			$tags = Tags::getTagsListByLimit(10);
+//			$goodsTags = new GoodsTags();
+//			$tags = Tags::getTagsListByLimit(10);
 		}
 
-		return $this->render ( 'add', [ 'model' => $model, 'goodsTags'=>$goodsTags, 'tags'=>$tags ] );
+		return $this->render ( 'add', [ 'model' => $model] );
 	}
 
 	/**

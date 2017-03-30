@@ -94,7 +94,15 @@ class Order extends \common\models\Order {
 	 * 获取关联orderLog数据
 	 * @return \yii\db\ActiveQuery
 	 */
-	public function getOrderLog(){
+	public function getOrderCloseReasonLog(){
 		return $this->hasOne(OrderLog::className(), ['orderId'=>'id'])->where('orderStatus = :orderStatus', ['orderStatus'=>7]);
+	}
+
+	/**
+	 * 获取关联orderLog数据
+	 * @return \yii\db\ActiveQuery
+	 */
+	public function getOrderLog(){
+		return $this->hasMany(OrderLog::className(), ['orderId'=>'id'])->orderBy('id DESC');
 	}
 }

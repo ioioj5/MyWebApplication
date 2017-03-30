@@ -38,9 +38,9 @@ $this->registerMetaTag ( [ 'name' => 'description', 'content' => '' ] );
                 <div class="form-group">
 					<?= $form->field ( $model, 'stock' )->textInput () ?>
                 </div>
-                <div class="form-group">
-					<a href="javascript:void(0);" data-toggle="modal" data-target="#myModal">添加标签</a>
-                </div>
+<!--                <div class="form-group">-->
+<!--					<a href="javascript:void(0);" data-toggle="modal" data-target="#myModal">添加标签</a>-->
+<!--                </div>-->
 
 
                 <div class="row templatemo-form-buttons">
@@ -58,29 +58,29 @@ $this->registerMetaTag ( [ 'name' => 'description', 'content' => '' ] );
     </div>
 </div>
 <!--模态框-->
-<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="myModalLabel">添加标签</h4>
-            </div>
-            <div class="modal-body">
-                <!--标签内容-->
-                <?php if(! empty($tags)):?>
-                    <?php foreach($tags as $key=>$val): ?>
-                        <button class="btn btn-default tagBtn" type="button"><?= $val->tagName; ?></button>
-                    <?php endforeach; ?>
-                <?php endif; ?>
-                <!--标签内容-->
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Save changes</button>
-            </div>
-        </div>
-    </div>
-</div>
+<!--<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">-->
+<!--    <div class="modal-dialog" role="document">-->
+<!--        <div class="modal-content">-->
+<!--            <div class="modal-header">-->
+<!--                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>-->
+<!--                <h4 class="modal-title" id="myModalLabel">添加标签</h4>-->
+<!--            </div>-->
+<!--            <div class="modal-body">-->
+<!--                <!--标签内容-->-->
+<!--                --><?php //if(! empty($tags)):?>
+<!--                    --><?php //foreach($tags as $key=>$val): ?>
+<!--                        <button class="btn btn-default tagBtn" type="button">--><?//= $val->tagName; ?><!--</button>-->
+<!--                    --><?php //endforeach; ?>
+<!--                --><?php //endif; ?>
+<!--                <!--标签内容-->-->
+<!--            </div>-->
+<!--            <div class="modal-footer">-->
+<!--                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>-->
+<!--                <button type="button" class="btn btn-primary">Save changes</button>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--</div>-->
 <!--模态框-->
 <?php
 $js = <<<JS
