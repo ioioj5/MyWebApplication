@@ -92,6 +92,8 @@ class Order extends \common\models\Order {
 	public static function makeOrder ( $dataOrder = [], $dataOrderGoods = [], $addressInfo = null, $cartList = [] ) {
 		if ( empty( $dataOrder ) or  empty($dataOrderGoods) or is_null($addressInfo)) return false;
 		$time = time();
+		$popStock = []; // 统计减去的库存
+
 
 		$transaction = Yii::$app->db->beginTransaction ();
 		try {
@@ -114,25 +116,49 @@ class Order extends \common\models\Order {
 				$dataOrderGoods
 			)->execute ();
 			// 处理库存
+
 			foreach($dataOrderGoods as $key=>$val) {
-				// 检查库存
-				$sql = "SELECT `stock`, `ver` FROM {{%goods}} WHERE `id` = '{$val['goodsId']}'";
-				$result = Yii::$app->db->createCommand($sql)->queryOne();
-				if($result['stock'] - $val['num'] < 0) {
-					throw new \Exception("存在库存不足的商品");
+				if($val['num'] > 0) {
+					for($i = 0; $i < $val['num']; $i++) {
+						$stockStatus = Yii::$app->redis->executeCommand("RPOP", ['goodsId-' . $val['goodsId']]);
+						if(! $stockStatus) {
+							throw new \Exception("存在库存不足的商品", 100);
+						}
+						if(isset($popStock[$val['goodsId']])) {
+							$popStock[$val['goodsId']] += 1;
+						}else {
+							$popStock[$val['goodsId']] = 1;
+						}
+					}
+					// 减去库存, 操作数据库 @TODO: 是否还需要同步数据库的商品库存?
+					$res = Yii::$app->db->createCommand()->update(
+						"{{%goods}}",
+						[
+							'stock'   => new Expression( '`stock` - ' . $val['num'] ),
+							'ver'	  => new Expression('`ver` + 1')
+						],
+						"`id` = '{$val['goodsId']}'"
+					)->execute();
+
 				}
-				// 减去库存
-				$res = Yii::$app->db->createCommand()->update(
-					"{{%goods}}",
-					[
-						'stock'   => new Expression( '`stock` - ' . $val['num'] ),
-						'ver'	  => new Expression('`ver` + 1')
-					],
-					"`id` = '{$val['goodsId']}' AND `ver` = '{$result['ver']}'"
-				)->execute();
-				if($res != 1) {
-					throw new \Exception("事务提交失败, 订单未生成.");
-				}
+//				// 检查库存
+//				$sql = "SELECT `stock`, `ver` FROM {{%goods}} WHERE `id` = '{$val['goodsId']}'";
+//				$result = Yii::$app->db->createCommand($sql)->queryOne();
+//				if($result['stock'] - $val['num'] < 0) {
+//					throw new \Exception("存在库存不足的商品");
+//				}
+//				// 减去库存
+//				$res = Yii::$app->db->createCommand()->update(
+//					"{{%goods}}",
+//					[
+//						'stock'   => new Expression( '`stock` - ' . $val['num'] ),
+//						'ver'	  => new Expression('`ver` + 1')
+//					],
+//					"`id` = '{$val['goodsId']}' AND `ver` = '{$result['ver']}'"
+//				)->execute();
+//				if($res != 1) {
+//					throw new \Exception("事务提交失败, 订单未生成.");
+//				}
 			}
 
 			// 2. 收货地址
@@ -172,7 +198,16 @@ class Order extends \common\models\Order {
 		} catch ( \Exception $e ) {
 			$transaction->rollBack ();
 
-			throw new \Exception($e->getMessage());
+			if(! empty($popStock) and $e->getCode() == 100) { // 库存不足导致异常后需补回已扣除的库存
+				print_r($popStock);exit;
+				foreach($popStock as $key=>$val) {
+					for($i = 0; $i < $val; $i++) {
+						Yii::$app->redis->executeCommand('LPUSH', ['goodsId-' . $key, 1]);
+					}
+				}
+			}
+
+			throw new \Exception($e->getMessage() . $e->getLine());
 		}
 		return $orderId;
 	}

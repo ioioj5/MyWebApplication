@@ -1,11 +1,11 @@
 <?php
 namespace console\controllers;
 
-
 use Yii;
-use yii\console\Controller;
+use common\components\ConsoleBaseController;
 
-class GoodsController extends Controller {
+
+class GoodsController extends ConsoleBaseController {
 	/**
 	 * 初始化商品数据
 	 */

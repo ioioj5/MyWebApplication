@@ -23,14 +23,15 @@ $this->registerCssFile ( '@web/css/jquery.toast.min.css', ['depends'=>['frontend
 
 		<div class="row">
 			<div class="col-md-12">
-				<ul class="nav nav-pills">
-					<li role="presentation" class="active"><a href="#">全部</a></li>
-					<li role="presentation"><a href="<?= Url::toRoute('goods/add')?>">添加商品</a></li>
-				</ul>
+                <ul class="nav nav-pills">
+                    <li role="presentation" class="active"><a href="#">全部</a></li>
+                    <li role="presentation"><a href="<?= Url::toRoute('goods/add')?>">添加商品</a></li>
+                </ul>
 				<div class="table-responsive">
 					<p>
 						搜索共获得: <b><?php echo $total; ?></b> 条记录(共计 <b><?php echo $totalPage; ?></b> 页, 每页
-						<b><?php echo $limit; ?></b> 条, 当前第 <b><?php echo $page; ?></b> 页)
+						<b><?php echo $limit; ?></b> 条, 当前第 <b><?php echo $page; ?></b> 页)&nbsp;&nbsp;
+                        <a href="javascript:void(0);" class="btn btn-primary syncToRedis">同步到redis</a>
 					</p>
 					<table class="table table-striped table-hover table-bordered">
 						<thead>
@@ -77,8 +78,32 @@ $this->registerCssFile ( '@web/css/jquery.toast.min.css', ['depends'=>['frontend
 <?php
 // AJAX: 更改商品上下架状态
 $ajaxGoodsStatusUrl = Url::toRoute('goods/ajax-status');
+$ajaxSyncToRedis = Url::toRoute('goods/ajax-sync-to-redis');
 
 $js = <<< JS
+    $(".syncToRedis").click(function() {
+        $(this).addClass('disabled');
+        $.ajax({
+            url: '{$ajaxSyncToRedis}',
+            data: {},
+            type: 'post',
+            cache: false,
+            dataType: 'json',
+            
+            success: function(response){
+                $(".syncToRedis").removeClass('disabled');
+                $.toast({
+                    text:response.msg,
+                    position: 'bottom-right',
+                });
+            },
+            error: function(jqXHR, textStatus, errorThrown){
+                console.log('异常: ' + jqXHR.responseText + jqXHR.status + jqXHR.readyState + jqXHR.statusText);
+                console.log('textStatus: ' + textStatus);
+                console.log('errorThrown: ' + errorThrown);
+            }
+        });
+    });
     // 上架, 下架
     $(".shelve,.off-shelve").click(function(){
         var goodsId = $(this).data('id'); // 商品id

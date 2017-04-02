@@ -142,4 +142,66 @@ class GoodsController extends AdminBaseController {
 		$this->redirect ( [ 'goods/index' ] );
 	}
 
+	/**
+	 * 同步商品库存到redis中
+	 * @return string
+	 */
+	public function actionAjaxSyncToRedis(){
+		if(Yii::$app->request->isAjax) {
+			$sql = "SELECT `id`, `name`, `price`, `stock`, `status` FROM {{%goods}}";
+			$goods = Yii::$app->db->createCommand($sql)->queryAll();
+			$stock = 0;
+			$len = 0;
+
+			try{
+				if(! empty($goods)) {
+					foreach ($goods as $key=>$val) {
+						$redisStock = Yii::$app->redis->executeCommand('LLEN', ['goodsId-' . $val['id']]);
+						if($val['status'] == 1 and $val['stock'] > 0) {
+							if($redisStock <= 0 or $redisStock != $val['stock']) {
+								$stock += $val['stock'];
+								for($i = 0; $i < $val['stock']; $i++) {
+									$return = Yii::$app->redis->executeCommand('LPUSH', ['goodsId-' . $val['id'], 1]);
+									if($return) {
+										$len++;
+									}
+								}
+							}
+						}else {
+							if($redisStock > 0) { // 去处已下架或者库存不足的商品
+								for($i = 0; $i < $redisStock; $i++) {
+									Yii::$app->redis->executeCommand("RPOP", ['goodsId-' . $val['id']]);
+								}
+							}
+						}
+						//$len = Yii::$app->redis->executeCommand('LLEN', ['goodsId-' . $val['id']]);
+						//echo "> goods_{$val['id']}, stock:{$val['stock']}, len:{$len} \n";
+					}
+					if($len == $stock) {
+						$this->response['code'] = 0;
+						$this->response['msg'] = '操作成功';
+
+						return json_encode($this->response);
+					}else {
+						$this->response['code'] = 1;
+						$this->response['msg'] = '操作失败' . 'stock:' . $stock . ', len:' . $len;
+
+						return json_encode($this->response);
+					}
+				}else {
+					$this->response['code'] = 1;
+					$this->response['msg']= '无商品';
+
+					return json_encode($this->response);
+				}
+			}catch (\Exception $e) {
+				$this->response['code'] = 1;
+				$this->response['msg'] = '未知错误: ' . $e->getMessage();
+
+				return json_encode($this->response);
+			}
+
+		}
+	}
+
 }
