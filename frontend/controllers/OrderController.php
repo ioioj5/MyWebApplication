@@ -164,20 +164,29 @@ class OrderController extends FrontController {
 			}else {
 				throw new NotFoundHttpException('生成订单号失败', 404);
 			}
+			//print_r($addressInfo);exit;
 
 			// 生成订单
 			try {
-				$return = Order::makeOrder($dataOrder, $dataOrderGoods, $addressInfo, $cartList);
+				//$return = Order::makeOrder($dataOrder, $dataOrderGoods, $addressInfo, $cartList);
+				$return = Order::makeOrderWithRedis($dataOrder, $dataOrderGoods, $addressInfo, $cartList);
 			}catch (\Exception $e) {
 				throw new NotFoundHttpException($e->getMessage(), 404);
 			}
 
 			if($return > 0) { // 订单生成成功
-				$this->redirect ( [ '/site/index' ] );
+				$this->redirect ( [ '/order/waiting' ] );
 			}else {
 				throw new NotFoundHttpException('订单生成失败', 404);
 			}
 		}
+	}
+
+	/**
+	 * 等待页面
+	 */
+	public function actionWaiting(){
+		return $this->render('waiting');
 	}
 
 	/**

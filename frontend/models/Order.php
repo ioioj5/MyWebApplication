@@ -4,6 +4,7 @@ use common\models\OrderGoods;
 use common\models\OrderLog;
 use Yii;
 use yii\db\Expression;
+use yii\helpers\ArrayHelper;
 
 /**
  * 前端: 订单相关操作
@@ -74,6 +75,31 @@ class Order extends \common\models\Order {
 	 */
 	public function getOrderLog(){
 		return $this->hasOne(OrderLog::className(), ['orderId'=>'id'])->where('orderStatus = :orderStatus', ['orderStatus'=>7]);
+	}
+
+	/**
+	 * [redis队列] 生成订单
+	 * @param array $dataOrder
+	 * @param array $dataOrderGoods
+	 * @param null  $addressInfo
+	 * @param array $cartList
+	 *
+	 * @return bool
+	 */
+	public static function makeOrderWithRedis ( $dataOrder = [], $dataOrderGoods = [], $addressInfo = null, $cartList = [] ) {
+		if ( empty( $dataOrder ) or  empty($dataOrderGoods) or is_null($addressInfo)) return false;
+		$time = time();
+
+		$data = [
+			'dataOrder'      => $dataOrder,
+			'dataOrderGoods' => $dataOrderGoods,
+			'addressInfo'    => ArrayHelper::toArray($addressInfo),
+			'cartList'       => ArrayHelper::toArray($cartList)
+		];
+
+		$return = Yii::$app->redis->executeCommand("LPUSH", ["orders", json_encode($data)]); // 写入队列
+
+		return $return;
 	}
 	/**
 	 * 生成订单
@@ -199,7 +225,7 @@ class Order extends \common\models\Order {
 			$transaction->rollBack ();
 
 			if(! empty($popStock) and $e->getCode() == 100) { // 库存不足导致异常后需补回已扣除的库存
-				print_r($popStock);exit;
+				//print_r($popStock);exit;
 				foreach($popStock as $key=>$val) {
 					for($i = 0; $i < $val; $i++) {
 						Yii::$app->redis->executeCommand('LPUSH', ['goodsId-' . $key, 1]);

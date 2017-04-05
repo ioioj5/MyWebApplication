@@ -50,6 +50,7 @@ class ConsoleBaseController extends Controller {
 				$logMsg .= $data;
 			}
 		}
+		echo $logMsg;
 		fwrite ( $this->fp, $logMsg );
 	}
 	/**
