@@ -15,7 +15,7 @@ return [
 	'controllerNamespace' => 'api\controllers',
 	'modules' => [
 		'v1' => [
-			'class' => 'api\module\v1',
+			'class' => 'api\modules\v1\Module',
 		],
 	],
 	'components'          => [
