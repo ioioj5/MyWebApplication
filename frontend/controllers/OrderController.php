@@ -186,6 +186,7 @@ class OrderController extends FrontController {
 	 * 等待页面
 	 */
 	public function actionWaiting(){
+
 		return $this->render('waiting');
 	}
 
