@@ -8,6 +8,7 @@ use frontend\models\UserAddress;
 use frontend\models\UserCart;
 use Yii;
 use yii\db\Expression;
+use yii\helpers\Url;
 use yii\web\NotFoundHttpException;
 
 class OrderController extends FrontController {
@@ -186,7 +187,12 @@ class OrderController extends FrontController {
 	 * 等待页面
 	 */
 	public function actionWaiting(){
+		if(Yii::$app->request->isAjax) {
+			$this->response['code'] = 0;
+			$this->response['msg'] = '订单生成成功, 点击 <a href='. Url::toRoute(['pay/index']) .'>此处</a> 支付';
 
+			return json_encode($this->response);
+		}
 		return $this->render('waiting');
 	}
 

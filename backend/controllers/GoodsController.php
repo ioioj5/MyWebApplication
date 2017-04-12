@@ -158,12 +158,26 @@ class GoodsController extends AdminBaseController {
 					foreach ($goods as $key=>$val) {
 						$redisStock = Yii::$app->redis->executeCommand('LLEN', ['goodsId-' . $val['id']]);
 						if($val['status'] == 1 and $val['stock'] > 0) {
-							if($redisStock <= 0 or $redisStock != $val['stock']) {
+							if($redisStock <= 0) {
 								$stock += $val['stock'];
-								for($i = 0; $i < $val['stock']; $i++) {
+								for($i = 0; $i < ($val['stock'] - $redisStock); $i++) {
 									$return = Yii::$app->redis->executeCommand('LPUSH', ['goodsId-' . $val['id'], 1]);
 									if($return) {
 										$len++;
+									}
+								}
+							}else {
+								if($redisStock >= $val['stock']) {
+									for($i = 0; $i < ($redisStock - $val['stock']); $i++) {
+										Yii::$app->redis->executeCommand("RPOP", ['goodsId-' . $val['id']]);
+
+									}
+								}else {
+									for($i = 0; $i < ($val['stock'] - $redisStock); $i++) {
+										$return = Yii::$app->redis->executeCommand('LPUSH', ['goodsId-' . $val['id'], 1]);
+										if($return) {
+											$len++;
+										}
 									}
 								}
 							}
