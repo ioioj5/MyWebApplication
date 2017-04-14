@@ -24,9 +24,9 @@
 
     1. 初始化商品数据
 
-        ```
-        $ ./yii goods/init
-        ```
+    ```
+    $ ./yii goods/init
+    ```
     2. 初始化商品库存
 
         $ ./yii redis/push
