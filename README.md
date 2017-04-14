@@ -22,25 +22,9 @@
 
 - 脚本
 
-    - 初始化商品数据
-
-        ```
-        $ ./yii goods/init
-        ```
-    - 初始化商品库存
-
-        ```
-        $ ./yii redis/push
-        ```
-
-    - 处理订单队列
-
-        ```
-        $ ./yii redis/makr-order
-        ```
-    
-    - 处理未支付订单
-
-        ```
-        $ ./yii order/un-paid-order
-        ```
+    ```
+    $ ./yii goods/init # 初始化商品数据
+    $ ./yii redis/push # 初始化商品库存
+    $ ./yii redis/makr-order # 处理订单队列
+    $ ./yii order/un-paid-order # 处理未支付订单
+    ```
