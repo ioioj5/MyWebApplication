@@ -22,19 +22,25 @@
 
 - 脚本
 
-    1. 初始化商品数据
+    - 初始化商品数据
 
-    ```
-    $ ./yii goods/init
-    ```
-    2. 初始化商品库存
+        ```
+        $ ./yii goods/init
+        ```
+    - 初始化商品库存
 
+        ```
         $ ./yii redis/push
+        ```
 
-    3. 处理订单队列
+    - 处理订单队列
 
+        ```
         $ ./yii redis/makr-order
+        ```
     
-    4. 处理未支付订单
+    - 处理未支付订单
 
+        ```
         $ ./yii order/un-paid-order
+        ```
