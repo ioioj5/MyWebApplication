@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: 2017-03-30 15:42:27
+-- Generation Time: 2017-04-15 14:31:54
 -- 服务器版本： 10.1.21-MariaDB
 -- PHP Version: 5.6.30
 
@@ -36,13 +36,6 @@ CREATE TABLE `tbl_admin` (
   `status` tinyint(1) NOT NULL DEFAULT '1' COMMENT '用户状态(1-正常,0-关闭)'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='用户表';
 
---
--- 转存表中的数据 `tbl_admin`
---
-
-INSERT INTO `tbl_admin` (`id`, `username`, `email`, `password`, `token`, `addtime`, `status`) VALUES
-(1, 'admin', 'peng_du2007@qq.com', '$2a$15$C81gSdUkgmzt4Y23hVucjOeI66S8zOq21PIzaCfcchgoSfG51TxNe', 'RmFldUtWc0sMKndv-zgfbjFdFl-0_gZq', 1469202625, 1);
-
 -- --------------------------------------------------------
 
 --
@@ -70,16 +63,6 @@ CREATE TABLE `tbl_goods` (
   `status` tinyint(1) NOT NULL DEFAULT '0' COMMENT '0-不可用, 1- 上架， 2-下架'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='商品表';
 
---
--- 转存表中的数据 `tbl_goods`
---
-
-INSERT INTO `tbl_goods` (`id`, `name`, `price`, `stock`, `ver`, `postTime`, `status`) VALUES
-(4, '第二件商品', '2.00', 100, 0, 1483902842, 1),
-(6, '第三件商品', '1.00', 100, 0, 1483905331, 1),
-(7, '第四件商品', '1.00', 100, 0, 1483905317, 1),
-(8, '第五件商品', '1.10', 97, 1, 1490878676, 1);
-
 -- --------------------------------------------------------
 
 --
@@ -100,7 +83,7 @@ CREATE TABLE `tbl_goods_tags` (
 --
 
 CREATE TABLE `tbl_order` (
-  `id` int(11) NOT NULL,
+  `id` bigint(11) NOT NULL,
   `userId` int(11) NOT NULL COMMENT '用户id',
   `orderCode` char(24) NOT NULL COMMENT '订单号',
   `price` decimal(10,2) NOT NULL COMMENT '订单价格',
@@ -109,15 +92,6 @@ CREATE TABLE `tbl_order` (
   `payTime` int(10) NOT NULL COMMENT '支付时间',
   `postTime` int(10) NOT NULL COMMENT '订单生成时间'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='订单表';
-
---
--- 转存表中的数据 `tbl_order`
---
-
-INSERT INTO `tbl_order` (`id`, `userId`, `orderCode`, `price`, `payStatus`, `orderStatus`, `payTime`, `postTime`) VALUES
-(1, 1, '201703301528312563903828', '1.00', 0, 7, 0, 1490880511),
-(2, 1, '201703301539253516967715', '1.00', 0, 1, 0, 1490881165),
-(3, 1, '201703301540067381134041', '3.30', 0, 1, 0, 1490881206);
 
 -- --------------------------------------------------------
 
@@ -133,15 +107,6 @@ CREATE TABLE `tbl_order_address` (
   `address` varchar(255) NOT NULL COMMENT '收货地址',
   `postTime` int(10) NOT NULL COMMENT '添加时间'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='用户收获地址';
-
---
--- 转存表中的数据 `tbl_order_address`
---
-
-INSERT INTO `tbl_order_address` (`id`, `orderId`, `name`, `contact`, `address`, `postTime`) VALUES
-(1, 1, 'asdasd', 'asdasd', 'asd', 1490880511),
-(2, 2, 'asdasd', 'asdasd', 'asd', 1490881165),
-(3, 3, 'asdasd', 'asdasd', 'asd', 1490881206);
 
 -- --------------------------------------------------------
 
@@ -159,15 +124,6 @@ CREATE TABLE `tbl_order_goods` (
   `postTime` int(10) NOT NULL DEFAULT '0' COMMENT '添加时间'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='订单商品表';
 
---
--- 转存表中的数据 `tbl_order_goods`
---
-
-INSERT INTO `tbl_order_goods` (`id`, `orderId`, `goodsId`, `goodsName`, `price`, `num`, `postTime`) VALUES
-(1, 1, 8, '第五件商品', '1.10', 1, 1490880511),
-(2, 2, 6, '第三件商品', '1.00', 1, 1490881165),
-(3, 3, 8, '第五件商品', '1.10', 3, 1490881206);
-
 -- --------------------------------------------------------
 
 --
@@ -183,16 +139,6 @@ CREATE TABLE `tbl_order_log` (
   `postTime` int(10) NOT NULL COMMENT '添加时间'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='订单日志表';
 
---
--- 转存表中的数据 `tbl_order_log`
---
-
-INSERT INTO `tbl_order_log` (`id`, `userId`, `orderId`, `orderStatus`, `remarks`, `postTime`) VALUES
-(1, 1, 1, 1, '', 1490880511),
-(2, 1, 1, 7, '支付超时关闭', 1490880789),
-(3, 1, 2, 1, '', 1490881165),
-(4, 1, 3, 1, '', 1490881206);
-
 -- --------------------------------------------------------
 
 --
@@ -206,13 +152,32 @@ CREATE TABLE `tbl_tags` (
   `status` tinyint(1) NOT NULL DEFAULT '1' COMMENT '0-不可用, 1-可用'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='标签表';
 
+-- --------------------------------------------------------
+
 --
--- 转存表中的数据 `tbl_tags`
+-- 表的结构 `tbl_ticket`
 --
 
-INSERT INTO `tbl_tags` (`id`, `tagName`, `postTime`, `status`) VALUES
-(1, '啊飒飒的', 1485004364, 1),
-(5, '1111', 1485012578, 1);
+CREATE TABLE `tbl_ticket` (
+  `id` int(11) NOT NULL,
+  `batchId` int(11) NOT NULL COMMENT '批次Id',
+  `number` char(32) NOT NULL COMMENT '票号',
+  `postTime` int(10) NOT NULL DEFAULT '0' COMMENT '添加时间'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='优惠券表' ROW_FORMAT=COMPACT;
+
+-- --------------------------------------------------------
+
+--
+-- 表的结构 `tbl_ticket_batch`
+--
+
+CREATE TABLE `tbl_ticket_batch` (
+  `id` int(11) NOT NULL,
+  `name` varchar(255) NOT NULL COMMENT '批次名称',
+  `remarks` varchar(255) NOT NULL DEFAULT '' COMMENT '备注',
+  `num` int(11) NOT NULL COMMENT '数量',
+  `postTime` int(10) NOT NULL DEFAULT '0' COMMENT '添加时间'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='优惠券批次表' ROW_FORMAT=COMPACT;
 
 -- --------------------------------------------------------
 
@@ -229,13 +194,6 @@ CREATE TABLE `tbl_user` (
   `logintime` int(10) NOT NULL DEFAULT '0' COMMENT '登入时间',
   `status` tinyint(1) NOT NULL DEFAULT '1' COMMENT '用户状态(1-正常,0-关闭)'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='用户表';
-
---
--- 转存表中的数据 `tbl_user`
---
-
-INSERT INTO `tbl_user` (`id`, `email`, `password`, `token`, `regtime`, `logintime`, `status`) VALUES
-(1, 'peng_du2007@qq.com', '$2a$15$C81gSdUkgmzt4Y23hVucjOeI66S8zOq21PIzaCfcchgoSfG51TxNe', 'RmFldUtWc0sMKndv-zgfbjFdFl-0_gZq', 1469202625, 1469202625, 1);
 
 -- --------------------------------------------------------
 
@@ -254,13 +212,6 @@ CREATE TABLE `tbl_user_address` (
   `updateTime` int(10) NOT NULL DEFAULT '0' COMMENT '更新时间'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='用户收获地址';
 
---
--- 转存表中的数据 `tbl_user_address`
---
-
-INSERT INTO `tbl_user_address` (`id`, `userId`, `name`, `contact`, `address`, `isDefault`, `postTime`, `updateTime`) VALUES
-(2, 1, 'asdasd', 'asdasd', 'asd', 0, 1483537577, 0);
-
 -- --------------------------------------------------------
 
 --
@@ -276,13 +227,6 @@ CREATE TABLE `tbl_user_cart` (
   `postTime` int(10) NOT NULL COMMENT '添加时间',
   `updateTime` int(10) NOT NULL DEFAULT '0' COMMENT '更新时间'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='购物车';
-
---
--- 转存表中的数据 `tbl_user_cart`
---
-
-INSERT INTO `tbl_user_cart` (`id`, `userId`, `goodsId`, `num`, `isChecked`, `postTime`, `updateTime`) VALUES
-(16, 2, 7, 3, 1, 1483290736, 1483290742);
 
 --
 -- Indexes for dumped tables
@@ -343,6 +287,19 @@ ALTER TABLE `tbl_tags`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `tbl_ticket`
+--
+ALTER TABLE `tbl_ticket`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `tbl_ticket_batch`
+--
+ALTER TABLE `tbl_ticket_batch`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `id` (`id`);
+
+--
 -- Indexes for table `tbl_user`
 --
 ALTER TABLE `tbl_user`
@@ -388,22 +345,22 @@ ALTER TABLE `tbl_goods_tags`
 -- 使用表AUTO_INCREMENT `tbl_order`
 --
 ALTER TABLE `tbl_order`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` bigint(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 --
 -- 使用表AUTO_INCREMENT `tbl_order_address`
 --
 ALTER TABLE `tbl_order_address`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 --
 -- 使用表AUTO_INCREMENT `tbl_order_goods`
 --
 ALTER TABLE `tbl_order_goods`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 --
 -- 使用表AUTO_INCREMENT `tbl_order_log`
 --
 ALTER TABLE `tbl_order_log`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 --
 -- 使用表AUTO_INCREMENT `tbl_tags`
 --
@@ -423,7 +380,7 @@ ALTER TABLE `tbl_user_address`
 -- 使用表AUTO_INCREMENT `tbl_user_cart`
 --
 ALTER TABLE `tbl_user_cart`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '购物车id', AUTO_INCREMENT=22;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '购物车id';
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
