@@ -35,7 +35,7 @@ CREATE TABLE `tbl_admin` (
   `addtime` int(10) NOT NULL COMMENT '注册时间',
   `status` tinyint(1) NOT NULL DEFAULT '1' COMMENT '用户状态(1-正常,0-关闭)'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='用户表';
-
+INSERT INTO `tbl_admin` (`id`, `username`, `email`, `password`, `token`, `addtime`, `status`) VALUES (1, 'admin', 'peng_du2007@qq.com', '$2a$15$C81gSdUkgmzt4Y23hVucjOeI66S8zOq21PIzaCfcchgoSfG51TxNe', 'RmFldUtWc0sMKndv-zgfbjFdFl-0_gZq', 1469202625, 1);
 -- --------------------------------------------------------
 
 --
@@ -58,7 +58,6 @@ CREATE TABLE `tbl_goods` (
   `name` varchar(50) NOT NULL COMMENT '商品名称',
   `price` decimal(10,2) NOT NULL DEFAULT '0.00' COMMENT '商品价格',
   `stock` int(11) NOT NULL DEFAULT '0' COMMENT '库存',
-  `ver` int(11) NOT NULL DEFAULT '0' COMMENT '乐观锁版本',
   `postTime` int(10) NOT NULL COMMENT '添加时间',
   `status` tinyint(1) NOT NULL DEFAULT '0' COMMENT '0-不可用, 1- 上架， 2-下架'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='商品表';
