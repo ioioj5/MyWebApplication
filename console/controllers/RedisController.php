@@ -110,8 +110,7 @@ class RedisController extends ConsoleBaseController{
 											$res = Yii::$app->db->createCommand()->update(
 												"{{%goods}}",
 												[
-													'stock'   => new Expression( '`stock` - ' . $v['num'] ),
-													'ver'	  => new Expression('`ver` + 1')
+													'stock'   => new Expression( '`stock` - ' . $v['num'] )
 												],
 												"`id` = '{$v['goodsId']}'"
 											)->execute();

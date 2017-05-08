@@ -16,9 +16,11 @@ $this->registerCssFile ( '@web/css/jquery.toast.min.css', ['depends'=>['frontend
 $waitingUrl = \yii\helpers\Url::toRoute(['order/waiting']);
 $js = <<<JS
 var i = 0;
+var t;
 $(document).ready(function(){
-    setInterval("$.waiting()", 1000);
+    t = setInterval("$.waiting()", 1000);
 });
+// 排队等待
 $.waiting = function(){
     $.ajax({
         url: '{$waitingUrl}',
@@ -30,7 +32,7 @@ $.waiting = function(){
         success: function(response){
             if(response.code == 0) {
                 $(".txt").html(response.msg);
-                
+                clearInterval(t); // 中断周期调用
             }else {
                 $(".txt").text(response.msg);
             }
@@ -41,7 +43,6 @@ $.waiting = function(){
             console.log('errorThrown: ' + errorThrown);
         }
     });
-    ///console.log(i);
     if(i % 5 == 0) {
         $(".txt").text("正在排队, 请耐心等待.");
     }else {
