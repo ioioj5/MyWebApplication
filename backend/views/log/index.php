@@ -9,6 +9,12 @@ $this->title = '日志管理' . Yii::$app->params[ 'siteName' ];
 $this->registerMetaTag ( [ 'name' => 'keywords', 'content' => '' ] );
 // 设置description
 $this->registerMetaTag ( [ 'name' => 'description', 'content' => '' ] );
+
+$css = <<<CSS
+.info {background-color: #81D4FA;padding:5px;border-radius: 5px;color: black;}
+CSS;
+$this->registerCss ( $css );
+
 ?>
 <div class="templatemo-content-wrapper">
 	<div class="templatemo-content">
@@ -18,39 +24,53 @@ $this->registerMetaTag ( [ 'name' => 'description', 'content' => '' ] );
 			<li class="active">日志列表</li>
 		</ol>
 		<h1>日志列表</h1>
-		<p>readme:</p>
-
+		<p class="info">
+            <font class="normal">操作说明</font>：<br>
+            1.只搜集前端(Frontend)信息.
+        </p>
+        <div class="row">
+            <div class="col-lg-1">
+                <a href="<?= Url::toRoute(['log/index']); ?>" class="btn btn-default">重置搜索</a>
+            </div>
+            <form action="<?= Url::toRoute(['log/index']); ?>" method="POST">
+                <input type="hidden" name="<?= Yii::$app->request->csrfParam; ?>" value="<?= Yii::$app->request->getCsrfToken();?>">
+                <div class="col-lg-2">
+                    <select class="form-control" name="level">
+                        <option value="0" <?php if(! isset($params['level']) or empty($params['level'])):?>selected<?php endif; ?>>错误级别</option>
+                        <option value="8" <?php if(isset($params['level']) and $params['level'] == 8): ?>selected<?php endif; ?>>Trace</option>
+                        <option value="4" <?php if(isset($params['level']) and $params['level'] == 4): ?>selected<?php endif; ?>>Info</option>
+                        <option value="2" <?php if(isset($params['level']) and $params['level'] == 2): ?>selected<?php endif; ?>>Warning</option>
+                        <option value="1" <?php if(isset($params['level']) and $params['level'] == 1): ?>selected<?php endif; ?>>Error</option>
+                    </select>
+                </div><!-- /.col-lg-6 -->
+                <div class="col-lg-1">
+                    <input class="btn btn-primary" type="submit" value="搜索">
+                </div>
+            </form>
+        </div>
 		<div class="row">
 			<div class="col-md-12">
-				<ul class="nav nav-pills">
-					<li role="presentation" class="active"><a href="#">全部</a></li>
-				</ul>
 				<div class="table-responsive">
 					<p>
 						搜索共获得: <b><?php echo $total; ?></b> 条记录(共计 <b><?php echo $totalPage; ?></b> 页, 每页
 						<b><?php echo $limit; ?></b> 条, 当前第 <b><?php echo $page; ?></b> 页)
 					</p>
-					<table class="table table-striped table-hover table-bordered">
-						<thead>
-						<tr>
-							<th>#</th>
-							<th>错误级别</th>
-							<th>消息分类</th>
-							<th>时间</th>
-							<th>消息前缀</th>
-							<th>主体</th>
-						</tr>
-						</thead>
+					<table class="table table-striped  table-bordered">
 						<tbody>
                         <?php if(isset($list['fields']) and ! empty($list['fields'])): ?>
                         <?php foreach($list['fields'] as $key=>$val): ?>
                             <tr>
                                 <td><?= $val->id; ?></td>
-                                <td><?= $val->level; ?></td>
-                                <td><?= $val->category; ?></td>
-                                <td><?= \common\components\Utils::udate ('Y-m-d H:i:s.u T', $val->log_time); ?></td>
-                                <td><?= $val->prefix; ?></td>
-                                <td><?= $val->message; ?></td>
+                                <td colspan="5">
+                                    错误级别: <b><?php if($val->level==1):?><font class="danger"><?= \backend\models\Log::level($val->level); ?></font><?php else: ?><?= \backend\models\Log::level($val->level); ?><?php endif; ?></b>
+                                    消息分类: <b><?= $val->category; ?></b>
+                                    请求时间: <b><?= \common\components\Utils::udate ('Y-m-d H:i:s.u T', $val->log_time); ?></b>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="6">
+                                    <code><?= $val->message; ?></code>
+                                </td>
                             </tr>
                         <?php endforeach; ?>
                         <?php endif; ?>

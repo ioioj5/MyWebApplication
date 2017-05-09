@@ -78,6 +78,7 @@ class AjaxController extends FrontController {
 				$cartInfo->num += 1;
 				$cartInfo->save ();
 			}
+			Yii::info("购物车: " . json_encode($cartInfo->toArray()), __METHOD__);
 
 			$this->response[ 'code' ] = 0;
 			$this->response[ 'msg' ]  = '添加成功';

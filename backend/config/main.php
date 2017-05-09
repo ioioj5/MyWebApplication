@@ -18,16 +18,6 @@ return [
             'identityClass' => 'common\models\Admin',
             'enableAutoLogin' => true,
         ],
-        'log' => [
-            'traceLevel' => YII_DEBUG ? 3 : 0,
-            'targets' => [
-                [
-                    'class' => 'yii\log\DbTarget',
-                    'levels' => ['error', 'warning', 'trace'],
-					'logVars'=>[]
-                ],
-            ],
-        ],
         'errorHandler' => [
             'errorAction' => 'error/index',
         ],

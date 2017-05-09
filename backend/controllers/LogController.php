@@ -9,13 +9,21 @@ use yii\helpers\Url;
 
 class LogController extends AdminBaseController {
 	public function actionIndex(){
-
-		$page = intval ( Yii::$app->request->get ( 'page', 1 ) );
-
+		if(Yii::$app->request->isPost) {
+			$page = intval ( Yii::$app->request->post ( 'page', 1 ) );
+			$level = intval(Yii::$app->request->post('level', 0)); // 错误级别
+		}else {
+			$page = intval ( Yii::$app->request->get ( 'page', 1 ) );
+			$level = intval(Yii::$app->request->get('level', 0)); // 错误级别
+		}
 		$limit  = 20;
 		$offset = ( $page - 1 ) * $limit;
-		$params = array ( 'log/index', 'page' => '{page}' ); // 生成URL参数数组
+		$params = ['log/index', 'page' => '{page}']; // 生成URL参数数组
 		$condition = [];
+		if(isset($level) and ! empty($level)) {
+			$condition['level'] = $level;
+			$params['level']= $level;
+		}
 		$list      = Log::getLogList ($condition, $limit, $offset);
 
 		$totalPage = ceil ( $list[ 'count' ] / $limit );

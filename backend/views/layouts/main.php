@@ -56,6 +56,9 @@ AppAsset::register ( $this );
             <li <?php if($this->context->id == 'order'): ?>class="active"<?php endif; ?>>
                 <a href="<?= Url::toRoute('order/index')?>"><i class="fa fa-cubes"></i>订单管理</a>
             </li>
+            <li <?php if($this->context->id == 'log'): ?>class="active"<?php endif; ?>>
+                <a href="<?= Url::toRoute('log/index')?>"><i class="fa fa-cubes"></i>日志管理</a>
+            </li>
 			<li <?php if($this->context->id == 'user'): ?>class="active"<?php endif; ?>>
 				<a href="<?= Url::toRoute('user/index')?>"><i class="fa fa-cubes"></i>用户管理</a>
 			</li>

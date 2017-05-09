@@ -19,17 +19,21 @@ return [
 			'enableAutoLogin' => false,
 			'enableSession'=>true,
 		],
-		'log'          => [
+		'log' => [
 			'traceLevel' => YII_DEBUG ? 3 : 0,
-			'targets'    => [
+			'targets' => [
 				[
-					'class'  => 'yii\log\FileTarget',
-					'levels' => [
-						'error',
-						'warning'
-					]
-				]
-			]
+					'class' => 'yii\log\FileTarget',
+					'levels' => ['error', 'warning'],
+					'logVars'=>[]
+				],
+				[
+					'class' => 'yii\log\DbTarget',
+					'levels' => ['error', 'warning','info'],
+					'categories' => ['frontend\*', 'common\*'],
+					'logVars'=>[]
+				],
+			],
 		],
 		'errorHandler' => [
 			'errorAction' => 'site/error'
