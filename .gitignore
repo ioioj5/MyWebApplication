@@ -28,3 +28,6 @@ composer.phar
 phpunit.phar
 # local phpunit config
 /phpunit.xml
+
+MyWebApplication.prj
+MyWebApplication.LAPTOP-DP.ioioj5.pui
