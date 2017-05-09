@@ -105,4 +105,12 @@ class Order extends \common\models\Order {
 	public function getOrderLog(){
 		return $this->hasMany(OrderLog::className(), ['orderId'=>'id'])->orderBy('id DESC');
 	}
+
+	/**
+	 * 获取关联用户数据(一对一)
+	 * @return \yii\db\ActiveQuery
+	 */
+	public function getUserInfo(){
+		return $this->hasOne (User::className (), ['id'=>'userId']);
+	}
 }

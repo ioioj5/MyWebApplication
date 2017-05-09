@@ -5,10 +5,19 @@
  * Date: 2017/5/8
  * Time: 16:24
  */
-return [
+$config = [
 	'components'=>[
 		'request'=>[
 			'cookieValidationKey'=>'lRn8YHvQtEl3'
 		]
 	]
 ];
+
+if (YII_ENV_DEV) {
+	$config['bootstrap'][] = 'gii';
+	$config['modules']['gii'] = [
+		'class' => 'yii\gii\Module',
+	];
+}
+
+return $config;

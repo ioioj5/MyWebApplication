@@ -26,10 +26,10 @@ $this->registerMetaTag ( [ 'name' => 'description', 'content' => '' ] );
                 <div class="panel panel-default">
                     <div class="panel-heading">订单详情</div>
                     <div class="panel-body">
-						<table class="table">
+						<table class="table table-bordered">
 							<tr>
 								<td width="10%">订单号</td>
-								<td width="20%"><?= $orderInfo->orderCode;?></td>
+								<td width="30%"><?= $orderInfo->orderCode;?></td>
 								<td width="10%">订单状态</td>
 								<td width="20%">
 								<b><?= \backend\models\Order::orderStatus($orderInfo->orderStatus); ?></b>
@@ -39,6 +39,27 @@ $this->registerMetaTag ( [ 'name' => 'description', 'content' => '' ] );
 								</td>
 								<td width="10%">下单时间</td>
 								<td width="20%"><?= date("Y-m-d H:i:s", $orderInfo->postTime);?></td>
+							</tr>
+							<tr>
+							    <td width="10%">购买者</td>
+							    <td width="30%">
+							        <?= $orderInfo->userId; ?>&nbsp;&nbsp;(<?= $orderInfo->userInfo->email; ?>)
+                                    <?php if($orderInfo->userInfo->status == 0): ?>
+                                        <span class="label label-danger">关闭</span>
+                                    <?php else: ?>
+                                        <span class="label label-success">正常</span>
+                                    <?php endif; ?>
+							    </td>
+                                <td width="10%">支付时间</td>
+                                <td width="20%">
+                                    <?php if($orderInfo->payTime > 0 ): ?>
+                                        <?= date('Y-m-d H:i:s', $orderInfo->payTime); ?>
+                                    <?php else: ?>
+                                        暂无
+                                    <?php endif; ?>
+                                </td>
+                                <td width="10%"></td>
+                                <td width="20%"></td>
 							</tr>
 						</table>
                     </div>
