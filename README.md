@@ -35,3 +35,22 @@
     $ ./yii redis/makr-order # 处理订单队列
     $ ./yii order/un-paid-order # 处理未支付订单
     ```
+    
+# 安装
+
+1. clone代码
+
+```angular2html
+$ git clone git@github.com:ioioj5/MyWebApplication.git
+```
+
+2. 配置虚拟站点
+>把根目录中的backend以及frontend单独配置虚拟站点.
+
+```angular2html
+1. backend: backend.local
+2. frontend: frontend.local
+```
+
+3. 导入./doc/db/*.sql
+> 先导入主表my.local.sql, 然后再导入其他表
