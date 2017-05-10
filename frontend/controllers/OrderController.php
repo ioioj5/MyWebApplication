@@ -12,7 +12,10 @@ use yii\helpers\Url;
 use yii\web\NotFoundHttpException;
 
 class OrderController extends FrontController {
-
+	/**
+	 * 根据参数判断是跳往购物车(加入购物车),还是订单确认页面(直接购买)
+	 * @throws NotFoundHttpException
+	 */
 	public function actionHandle(){
 		$goodsId = intval(Yii::$app->request->get('goodsId'));
 		if($goodsId > 0) { // 直接购买
@@ -95,8 +98,13 @@ class OrderController extends FrontController {
 			$this->redirect ( [ '/order/index' ] );
 		}
 	}
-	public function actionIndex () {
 
+	/**
+	 * 订单确认页面
+	 * 不管是直接购买还是从先加入到购物车中再结算的商品, 都要先进入到购物车中.
+	 * @return string
+	 */
+	public function actionIndex () {
 		// 购物车
 		$cartList = UserCart::getCartsCheckedByUserId ( Yii::$app->user->id );
 		// 购物车中没有选中商品

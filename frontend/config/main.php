@@ -29,7 +29,7 @@ return [
 				],
 				[
 					'class' => 'yii\log\DbTarget',
-					'levels' => ['error', 'warning','info'],
+					'levels' => ['error', 'warning','info', 'trace'],
 					'categories' => ['frontend\*', 'common\*'],
 					'logVars'=>[]
 				],

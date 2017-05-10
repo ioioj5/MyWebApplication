@@ -194,6 +194,8 @@ CREATE TABLE `tbl_user` (
   `status` tinyint(1) NOT NULL DEFAULT '1' COMMENT '用户状态(1-正常,0-关闭)'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='用户表';
 
+ALTER TABLE `tbl_user` CHANGE `logintime` `loginTime` INT(10) NOT NULL DEFAULT '0' COMMENT '登入时间';
+
 -- --------------------------------------------------------
 
 --

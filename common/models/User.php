@@ -15,7 +15,7 @@ use yii\web\IdentityInterface;
  * @property string  $password
  * @property string  $token
  * @property integer $regtime
- * @property integer $logintime
+ * @property integer $loginTime
  * @property integer $status
  */
 class User extends ActiveRecord implements IdentityInterface {
@@ -35,7 +35,7 @@ class User extends ActiveRecord implements IdentityInterface {
 	public function rules () {
 		return [
 			[ [ 'email', 'password', 'token', 'regtime' ], 'required' ],
-			[ [ 'regtime', 'logintime', 'status' ], 'integer' ],
+			[ [ 'regtime', 'loginTime', 'status' ], 'integer' ],
 			[ [ 'email' ], 'string', 'max' => 50 ],
 			[ [ 'password', 'token' ], 'string', 'max' => 64 ]
 		];
@@ -51,7 +51,7 @@ class User extends ActiveRecord implements IdentityInterface {
 			'password'  => '密码',
 			'token'     => 'Token',
 			'regtime'   => '注册时间',
-			'logintime' => '登入时间',
+			'loginTime' => '登入时间',
 			'status'    => '用户状态(1-正常,0-关闭)',
 		];
 	}

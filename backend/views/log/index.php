@@ -24,7 +24,7 @@ $this->registerCss ( $css );
 			<li class="active">日志列表</li>
 		</ol>
 		<h1>日志列表</h1>
-		<p class="info">
+		<p>
             <font class="normal">操作说明</font>：<br>
             1.只搜集前端(Frontend)信息.
         </p>
@@ -64,12 +64,15 @@ $this->registerCss ( $css );
                                 <td colspan="5">
                                     错误级别: <b><?php if($val->level==1):?><font class="danger"><?= \backend\models\Log::level($val->level); ?></font><?php else: ?><?= \backend\models\Log::level($val->level); ?><?php endif; ?></b>
                                     消息分类: <b><?= $val->category; ?></b>
-                                    请求时间: <b><?= \common\components\Utils::udate ('Y-m-d H:i:s.u T', $val->log_time); ?></b>
+                                    请求时间: <b><?= \common\components\Utils::udate ('Y-m-d H:i:s.u T', $val->log_time); ?></b> <br />
+                                    <?php if(! empty($val->prefix)): ?>
+                                        <?php //匹配ip,userId,sessionId ?>
+                                    <?php endif; ?>
                                 </td>
                             </tr>
                             <tr>
                                 <td colspan="6">
-                                    <code><?= $val->message; ?></code>
+                                    <?= \yii\helpers\Html::encode ($val->message); ?>
                                 </td>
                             </tr>
                         <?php endforeach; ?>

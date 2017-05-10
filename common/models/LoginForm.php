@@ -4,6 +4,7 @@ namespace common\models;
 use common\lib\Bcrypt;
 use Yii;
 use yii\base\Model;
+use yii\helpers\ArrayHelper;
 
 /**
  * Login form
@@ -52,7 +53,32 @@ class LoginForm extends Model {
 	 */
 	public function login () {
 		if ( $this->validate () ) {
-			return Yii::$app->user->login ( $this->getUser (), $this->rememberMe ? 3600 * 24 * 30 : 0 );
+			$user = $this->getUser ();
+
+			// 记录用户登入信息
+			Yii::trace (
+				ArrayHelper::toArray (
+					$user,
+					[
+						'common\models\User'=> [
+							'id',
+							'email',
+							'loginTime'=>function($user){
+								return date('Y-m-d H:i:s', $user->loginTime);
+							},
+							'status'=>function($user) {
+								if($user->status == 1) {
+									return '正常';
+								}else {
+									return '关闭';
+								}
+							}
+						]
+					]
+				),
+				__METHOD__
+			);
+			return Yii::$app->user->login ( $user, $this->rememberMe ? 3600 * 24 * 30 : 0 );
 		} else {
 			return false;
 		}
