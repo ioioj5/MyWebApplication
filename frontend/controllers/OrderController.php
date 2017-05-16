@@ -131,6 +131,7 @@ class OrderController extends FrontController {
 
 			// 初始化变量
 			$totalMoney = 0; // 商品总金额
+			$cartIds = []; // 存储购物车id
 			$dataOrder = ['userId'=>Yii::$app->user->id, 'payStatus'=>0, 'orderStatus'=>1, 'payTime'=>0, 'postTime'=>$this->time]; // 订单表数据
 			$dataOrderGoods = []; // 订单商品表数据
 
