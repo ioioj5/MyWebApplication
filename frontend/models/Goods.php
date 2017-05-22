@@ -30,6 +30,8 @@ class Goods extends \common\models\Goods {
 	 * @return null|static
 	 */
 	public static function getOne($goodsId = 0) {
+		if($goodsId < 1) return false;
+
 		return parent::find()->where(['id'=>$goodsId, 'status'=>1])->one();
 	}
 }

@@ -12,7 +12,4 @@ class FrontController extends XController {
 	public function init(){
 		parent::init();
 	}
-
-
-
 }

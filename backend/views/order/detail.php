@@ -58,8 +58,12 @@ $this->registerMetaTag ( [ 'name' => 'description', 'content' => '' ] );
                                         暂无
                                     <?php endif; ?>
                                 </td>
-                                <td width="10%"></td>
-                                <td width="20%"></td>
+                                <td width="10%">订单价格</td>
+                                <td width="20%"><b><?= $orderInfo->price; ?></b></td>
+							</tr>
+							<tr>
+								<td width="10%">操作</td>
+								<td colspan="5"></td>
 							</tr>
 						</table>
                     </div>

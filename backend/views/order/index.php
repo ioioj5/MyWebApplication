@@ -49,7 +49,7 @@ $this->registerMetaTag ( [ 'name' => 'description', 'content' => '' ] );
                                     <td colspan="5">
                                         订单号:<?= $val->orderCode;?>,
                                         下单时间: <?= date('Y-m-d H:i:s', $val->postTime);?>
-                                        <?php if($val->orderStatus > 1): ?>
+                                        <?php if($val->orderStatus > 1 and $val->payStatus  == 1): ?>
                                             支付时间: <?= date('Y-m-d H:i:s', $val->payTime); ?>
                                         <?php endif; ?>
                                     </td>
@@ -82,8 +82,8 @@ $this->registerMetaTag ( [ 'name' => 'description', 'content' => '' ] );
                                                 <a href="<?= Url::toRoute ( [ 'order/detail', 'orderId' => $val->id ] ); ?>">订单详情</a>
                                             </p>
                                         </td>
+                                        <td rowspan="<?= $count; ?>"></td>
                                         <?php endif; ?>
-                                        <td></td>
                                     </tr>
                                     <?php endforeach; ?>
                                 <?php endif; ?>

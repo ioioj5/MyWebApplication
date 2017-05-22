@@ -309,12 +309,12 @@ class AjaxController extends FrontController {
 			$return = UserCart::updateAll ( $data, '`id` = ' . $userCart->id );
 			if ( $return ) {
 				$this->response[ 'code' ] = 0;
-				$this->response[ 'msg' ]  = '添加成功';
+				$this->response[ 'msg' ]  = '操作成功';
 
 				return json_encode ( $this->response );
 			} else {
 				$this->response[ 'code' ] = 1;
-				$this->response[ 'msg' ]  = '添加失败';
+				$this->response[ 'msg' ]  = '操作失败';
 
 				return json_encode ( $this->response );
 			}

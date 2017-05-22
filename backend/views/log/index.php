@@ -29,24 +29,22 @@ $this->registerCss ( $css );
             1.只搜集前端(Frontend)信息.
         </p>
         <div class="row">
-            <div class="col-lg-1">
-                <a href="<?= Url::toRoute(['log/index']); ?>" class="btn btn-default">重置搜索</a>
+            <div class="col-md-12">
+                <form action="<?= Url::toRoute(['log/index']); ?>" method="POST" class="form-inline">
+                    <input type="hidden" name="<?= Yii::$app->request->csrfParam; ?>" value="<?= Yii::$app->request->getCsrfToken();?>">
+                    <a href="<?= Url::toRoute(['log/index']); ?>" class="btn btn-default col-xs-3 col-sm-2 col-md-2 col-lg-1">重置搜索</a>
+                    <div class="form-group col-xs-4 col-sm-3 col-md-3 col-lg-2">
+                        <select class="form-control" name="level">
+                            <option value="0" <?php if(! isset($params['level']) or empty($params['level'])):?>selected<?php endif; ?>>错误级别</option>
+                            <option value="8" <?php if(isset($params['level']) and $params['level'] == 8): ?>selected<?php endif; ?>>Trace</option>
+                            <option value="4" <?php if(isset($params['level']) and $params['level'] == 4): ?>selected<?php endif; ?>>Info</option>
+                            <option value="2" <?php if(isset($params['level']) and $params['level'] == 2): ?>selected<?php endif; ?>>Warning</option>
+                            <option value="1" <?php if(isset($params['level']) and $params['level'] == 1): ?>selected<?php endif; ?>>Error</option>
+                        </select>
+                    </div>
+                    <input class="btn btn-primary col-xs-2 col-sm-2 col-md-2 col-lg-1" type="submit" value="搜索">
+                </form>
             </div>
-            <form action="<?= Url::toRoute(['log/index']); ?>" method="POST">
-                <input type="hidden" name="<?= Yii::$app->request->csrfParam; ?>" value="<?= Yii::$app->request->getCsrfToken();?>">
-                <div class="col-lg-2">
-                    <select class="form-control" name="level">
-                        <option value="0" <?php if(! isset($params['level']) or empty($params['level'])):?>selected<?php endif; ?>>错误级别</option>
-                        <option value="8" <?php if(isset($params['level']) and $params['level'] == 8): ?>selected<?php endif; ?>>Trace</option>
-                        <option value="4" <?php if(isset($params['level']) and $params['level'] == 4): ?>selected<?php endif; ?>>Info</option>
-                        <option value="2" <?php if(isset($params['level']) and $params['level'] == 2): ?>selected<?php endif; ?>>Warning</option>
-                        <option value="1" <?php if(isset($params['level']) and $params['level'] == 1): ?>selected<?php endif; ?>>Error</option>
-                    </select>
-                </div><!-- /.col-lg-6 -->
-                <div class="col-lg-1">
-                    <input class="btn btn-primary" type="submit" value="搜索">
-                </div>
-            </form>
         </div>
 		<div class="row">
 			<div class="col-md-12">

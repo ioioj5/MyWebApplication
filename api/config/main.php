@@ -13,7 +13,7 @@ return [
 	],
 	'defaultRoute'        => 'site', // 默认控制器
 	'controllerNamespace' => 'api\controllers',
-	'modules' => [
+	'modules'             => [
 		'v1' => [
 			'class' => 'api\modules\v1\Module',
 		],
@@ -22,34 +22,29 @@ return [
 		'user'         => [
 			'identityClass'   => 'common\models\User',
 			'enableAutoLogin' => false,
-			'enableSession'=>true,
+			'enableSession'   => true,
 		],
-		'log'          => [
+		'log' => [
 			'traceLevel' => YII_DEBUG ? 3 : 0,
-			'targets'    => [
+			'targets' => [
 				[
-					'class'  => 'yii\log\FileTarget',
-					'levels' => [
-						'error',
-						'warning'
-					]
-				]
-			]
+					'class' => 'yii\log\FileTarget',
+					'levels' => ['error', 'warning'],
+					'logVars'=>[]
+				],
+				[
+					'class' => 'yii\log\DbTarget',
+					'levels' => ['error', 'warning','info', 'trace'],
+					'categories' => ['api\*', 'common\*'],
+					'logVars'=>[]
+				],
+			],
 		],
 		'errorHandler' => [
 			'errorAction' => 'site/error'
 		],
 	]
 	// 'index' => 'site/index',
-
-	/*
-	 * 'urlManager' => [
-	 * 'enablePrettyUrl' => true,
-	 * 'showScriptName' => false,
-	 * 'rules' => [
-	 * ],
-	 * ],
-	 */
 	,
 	'params'              => $params
 ];
