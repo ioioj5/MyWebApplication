@@ -46,7 +46,7 @@ class SignupForm extends Model {
 		$user->password  = $bcrypt->hash ( $this->password );
 		$user->token     = Yii::$app->security->generateRandomString ();
 		$user->regtime   = time ();
-		$user->logintime = time ();
+		$user->loginTime = time ();
 		$user->status    = 1;
 
 		return $user->save () ? $user : null;

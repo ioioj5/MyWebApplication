@@ -2,6 +2,7 @@
 namespace frontend\models;
 use common\models\OrderGoods;
 use common\models\OrderLog;
+use common\models\User;
 use Yii;
 use yii\db\Expression;
 use yii\helpers\ArrayHelper;
@@ -50,15 +51,15 @@ class Order extends \common\models\Order {
 	}
 
 	/**
-	 * 获取一条订单信息
+	 * 获取一条订单记录
+	 * @param int $id
 	 *
-	 * @param int $orderId
-	 *
-	 * @return null|static
-	 *
+	 * @return array|bool|null|\yii\db\ActiveRecord
 	 */
-	public static function getOne($orderId = 0) {
-		return parent::find()->where(['id'=>$orderId])->one();
+	public static function getOneById($id = 0){
+		if($id < 1) return false;
+
+		return parent::findOne($id);
 	}
 
 	/**
@@ -73,8 +74,35 @@ class Order extends \common\models\Order {
 	 * 获取关联orderLog数据
 	 * @return \yii\db\ActiveQuery
 	 */
-	public function getOrderLog(){
+	public function getOrderCloseReasonLog(){
 		return $this->hasOne(OrderLog::className(), ['orderId'=>'id'])->where('orderStatus = :orderStatus', ['orderStatus'=>7]);
+	}
+
+	/**
+	 * 获取关联orderLog数据
+	 * @return \yii\db\ActiveQuery
+	 */
+	public function getOrderLog(){
+		return $this->hasMany(OrderLog::className(), ['orderId'=>'id'])->orderBy('id DESC');
+	}
+
+	/**
+	 * 获取关联用户数据(一对一)
+	 * @return \yii\db\ActiveQuery
+	 */
+	public function getUserInfo(){
+		return $this->hasOne (User::className (), ['id'=>'userId']);
+	}
+	/**
+	 * 获取一条订单信息
+	 *
+	 * @param int $orderId
+	 *
+	 * @return null|static
+	 *
+	 */
+	public static function getOne($orderId = 0) {
+		return parent::find()->where(['id'=>$orderId])->one();
 	}
 
 	/**
@@ -146,6 +174,7 @@ class Order extends \common\models\Order {
 			foreach($dataOrderGoods as $key=>$val) {
 				if($val['num'] > 0) {
 					for($i = 0; $i < $val['num']; $i++) {
+						// 扣除库存
 						$stockStatus = Yii::$app->redis->executeCommand("RPOP", ['goodsId-' . $val['goodsId']]);
 						if(! $stockStatus) {
 							throw new \Exception("存在库存不足的商品", 100);
@@ -156,15 +185,15 @@ class Order extends \common\models\Order {
 							$popStock[$val['goodsId']] = 1;
 						}
 					}
-					// 减去库存, 操作数据库 @TODO: 是否还需要同步数据库的商品库存?
-					$res = Yii::$app->db->createCommand()->update(
-						"{{%goods}}",
-						[
-							'stock'   => new Expression( '`stock` - ' . $val['num'] ),
-							'ver'	  => new Expression('`ver` + 1')
-						],
-						"`id` = '{$val['goodsId']}'"
-					)->execute();
+//					// 减去库存, 操作数据库 @TODO: 是否还需要同步数据库的商品库存?
+//					$res = Yii::$app->db->createCommand()->update(
+//						"{{%goods}}",
+//						[
+//							'stock'   => new Expression( '`stock` - ' . $val['num'] ),
+//							'ver'	  => new Expression('`ver` + 1')
+//						],
+//						"`id` = '{$val['goodsId']}'"
+//					)->execute();
 
 				}
 //				// 检查库存

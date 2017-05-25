@@ -2,11 +2,13 @@
 
 /* @var $this \yii\web\View */
 /* @var $content string */
+
+use backend\assets\AppAsset;
 use yii\helpers\Html;
 use yii\bootstrap\Nav;
 use yii\bootstrap\NavBar;
+use yii\helpers\Url;
 use yii\widgets\Breadcrumbs;
-use frontend\assets\AppAsset;
 use common\widgets\Alert;
 
 AppAsset::register ( $this );
@@ -15,95 +17,61 @@ AppAsset::register ( $this );
 <!DOCTYPE html>
 <html lang="<?= Yii::$app->language ?>">
 <head>
-    <meta charset="<?= Yii::$app->charset ?>">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta charset="<?= Yii::$app->charset ?>">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<?= Html::csrfMetaTags () ?>
-    <title><?= Html::encode ( $this->title ) ?></title>
+	<title><?= Html::encode ( $this->title ) ?></title>
 	<?php $this->head () ?>
+	<?= Html::csrfMetaTags() ?>
 </head>
 <body>
 <?php $this->beginBody () ?>
 
-<div class="wrap">
-	<?php
-	NavBar::begin ( [
-		'brandLabel' => 'MyWebApplication',
-		'brandUrl'   => Yii::$app->homeUrl,
-		'options'    => [
-			'class' => 'navbar-default navbar-fixed-top'
-		]
-	] );
-	$menuItems = [
-		[
-			'label' => 'Home',
-			'url'   => [
-				'/site/index'
-			]
-		],
-		[
-			'label' => 'About',
-			'url'   => [
-				'/site/about'
-			]
-		]
-	];
-	if ( Yii::$app->user->isGuest ) {
-		$menuItems [] = [
-			'label' => 'Signup',
-			'url'   => [
-				'/auth/sign-up'
-			]
-		];
-		$menuItems [] = [
-			'label' => 'Signin',
-			'url'   => [
-				'/auth/sign-in'
-			]
-		];
-	} else {
-		$menuItems [] = [
-			'label' => 'Cart',
-			'url'   => [
-				'/cart/index'
-			]
-		];
-		$menuItems [] = [
-			'label' => Yii::$app->user->identity->email,
-			'url'   => [
-				'/my/index'
-			]
-		];
-		$menuItems[]  = [
-			'label' => 'Logout',
-			'url'   => [
-				'/auth/logout'
-			]
-		];
-	}
-	echo Nav::widget ( [
-		'options' => [
-			'class' => 'navbar-nav navbar-right'
-		],
-		'items'   => $menuItems
-	] );
-	NavBar::end ();
-	?>
-
-    <div class="container">
-		<?= Breadcrumbs::widget ( [ 'links' => isset ( $this->params [ 'breadcrumbs' ] ) ? $this->params [ 'breadcrumbs' ] : [] ] ) ?>
-		<?= Alert::widget () ?>
-		<?= $content ?>
-    </div>
+<div class="navbar navbar-inverse" role="navigation">
+	<div class="navbar-header">
+		<div class="logo"><h1>个人中心 - <?= Yii::$app->params[ 'siteName' ]; ?></h1></div>
+		<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+			<span class="sr-only">Toggle navigation</span> <span class="icon-bar"></span> <span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+		</button>
+	</div>
 </div>
+<div class="template-page-wrapper">
+	<!-- 导航开始 -->
+	<div class="navbar-collapse collapse templatemo-sidebar">
+		<ul class="templatemo-sidebar-menu">
+			<li>
+				<form class="navbar-form">
+					<input type="text" class="form-control" id="templatemo_search_box" placeholder="Search...">
+					<span class="btn btn-default">Go</span>
+				</form>
+			</li>
+			<li <?php if($this->context->id == 'site'): ?>class="active"<?php endif; ?>><a href="<?= Url::toRoute('my/index');?>"><i class="fa fa-home"></i>控制面板</a></li>
+            <li <?php if($this->context->id == 'my-order'): ?>class="active"<?php endif; ?>>
+                <a href="<?= Url::toRoute('my-order/index')?>"><i class="fa fa-cubes"></i>订单管理</a>
+            </li>
 
-<footer class="footer">
-    <div class="container">
-        <p class="pull-left">&copy; My Company <?= date ( 'Y' ) ?></p>
-
-        <p class="pull-right"><?= Yii::powered () ?></p>
-    </div>
-</footer>
-
+			<li <?php if($this->context->id == 'my-account'): ?>class="active"<?php endif; ?>>
+				<a href="<?= Url::toRoute('my-account/index')?>"><i class="fa fa-cubes"></i>账户管理</a>
+			</li>
+			<li>
+				<a href="<?= Url::toRoute(['auth/logout'])?>"><i class="fa fa-sign-out"></i>Sign Out</a>
+			</li>
+		</ul>
+	</div>
+	<!-- 导航结束 -->
+	<!-- 正文开始 -->
+	<?= $content ?>
+	<!-- 正文结束 -->
+	<!-- footer开始 -->
+	<footer class="templatemo-footer">
+		<div class="templatemo-copyright">
+			<p>Copyright &copy; 2084 Your Company Name Collect from
+				<a href="http://www.mianfeimoban.com/" target="_blank">网站模板</a></p>
+		</div>
+	</footer>
+	<!-- footer结束 -->
+</div>
 <?php $this->endBody () ?>
 </body>
 </html>

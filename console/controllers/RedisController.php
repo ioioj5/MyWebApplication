@@ -13,6 +13,7 @@ use yii\db\Expression;
 class RedisController extends ConsoleBaseController{
 	/**
 	 * 商品入队列, 从左侧入栈
+	 * 运行方式: ./yii redis/push
 	 */
 	public function actionPush(){
 		$sql = "SELECT `id`, `name`, `price`, `stock` FROM {{%goods}} WHERE `status` = 1 AND `stock` > 0";
@@ -31,6 +32,7 @@ class RedisController extends ConsoleBaseController{
 
 	/**
 	 * 商品出队列, 从右侧出栈
+	 * 运行方式: ./yii redis/pop
 	 */
 	public function actionPop(){
 		$sql = "SELECT `id`, `name`, `price`, `stock` FROM {{%goods}} WHERE `status` = 1 AND `stock` > 0";
@@ -54,7 +56,36 @@ class RedisController extends ConsoleBaseController{
 	}
 
 	/**
+	 * 同步商品库存
+	 * 运行方式: ./yii redis/sync-goods-stock
+	 */
+	public function actionSyncGoodsStock(){
+		$sql = "SELECT `id`, `name`, `price`, `stock` FROM {{%goods}} WHERE `status` = 1 AND `stock` > 0";
+		$goods = Yii::$app->db->createCommand($sql)->queryAll();
+		if(! empty($goods)) {
+			foreach($goods as $key=>$val) {
+				$len = Yii::$app->redis->executeCommand('LLEN', ['goodsId-' . $val['id']]); // 计算key:goodsId-1的元素个数
+				if($len > 0) {
+					Yii::$app->db->createCommand ()->update(
+						"{{%goods}}",
+						['stock'=>$len],
+						'`id` = ' . $val['id']
+					)->execute ();
+				}else {
+					// 商品下架 + 库存清零
+					Yii::$app->db->createCommand ()->update(
+						"{{%goods}}",
+						['status'=>2, 'stock'=>0],
+						'`id` = ' . $val['id']
+					)->execute ();
+				}
+			}
+		}
+	}
+
+	/**
 	 * [redis队列] 生成订单
+	 * 运行方式: ./yii redis/make-order
 	 */
 	public function actionMakeOrder(){
 		while (true) {

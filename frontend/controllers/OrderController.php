@@ -178,14 +178,16 @@ class OrderController extends FrontController {
 
 			// 生成订单
 			try {
-				//$return = Order::makeOrder($dataOrder, $dataOrderGoods, $addressInfo, $cartList);
-				$return = Order::makeOrderWithRedis($dataOrder, $dataOrderGoods, $addressInfo, $cartList);
+				// 生成订单并返回订单id
+				$return = Order::makeOrder($dataOrder, $dataOrderGoods, $addressInfo, $cartList);
+				//$return = Order::makeOrderWithRedis($dataOrder, $dataOrderGoods, $addressInfo, $cartList);
 			}catch (\Exception $e) {
 				throw new NotFoundHttpException($e->getMessage(), 404);
 			}
 
 			if($return > 0) { // 订单生成成功
-				$this->redirect ( [ '/order/waiting' ] );
+				$this->redirect (['my-order/detail', 'orderId'=>$return]);
+				//$this->redirect ( [ '/order/waiting' ] );
 			}else {
 				throw new NotFoundHttpException('订单生成失败', 404);
 			}
