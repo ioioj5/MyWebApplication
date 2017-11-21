@@ -2,6 +2,7 @@
 namespace frontend\controllers;
 
 use common\components\FrontController;
+use common\models\User;
 use frontend\models\Order;
 use frontend\models\UserAddress;
 use Yii;
@@ -25,6 +26,16 @@ class MyController extends FrontController {
 	 */
 	public function actionIndex () {
 		return $this->render ( 'index' );
+	}
+
+	/**
+	 * 我的账户
+	 */
+	public function actionAccount(){
+		$model = \common\models\User::findOne(Yii::$app->user->id);
+
+
+		return $this->render('account', ['model'=>$model]);
 	}
 
 	/**

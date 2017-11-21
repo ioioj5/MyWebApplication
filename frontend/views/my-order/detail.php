@@ -65,7 +65,6 @@ $this->registerMetaTag ( [ 'name' => 'description', 'content' => '' ] );
 								<td colspan="5">
                                     <a href="javascript:void(0);">支付</a>
                                     <a href="javascript:void(0);">取消</a>
-                                    <a href="javascript:void(0);">关闭</a>
                                     <!--通用功能-->
                                     <a href="javascript:void(0);">备注</a>
                                 </td>

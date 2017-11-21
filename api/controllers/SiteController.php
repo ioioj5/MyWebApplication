@@ -1,6 +1,9 @@
 <?php
+
 namespace api\controllers;
+
 use Yii;
+use yii\web\Response;
 
 /**
  * Created by PhpStorm.
@@ -9,29 +12,25 @@ use Yii;
  * Time: 22:51
  */
 class SiteController extends \common\components\FrontController {
-	public function actions()
-	{
-		return [
-			'error' => [
-				'class' => 'yii\web\ErrorAction',
-			],
-			'captcha' => [
-				'class' => 'yii\captcha\CaptchaAction',
-				'fixedVerifyCode' => YII_ENV_TEST ? 'testme' : null,
-			],
-		];
-	}
-	public function actionIndex(){
-		return $this->render('index');
-	}
-	public function actionAbout(){
-		return $this->render('about');
+	public function actionIndex () {
+		return $this->render ( 'index' );
 	}
 
-	public function actionError(){
+	public function actionAbout () {
+		return $this->render ( 'about' );
+	}
+
+	public function actionError () {
 		$exception = Yii::$app->errorHandler->exception;
-		if ($exception !== null) {
-			return $this->render('error', ['exception' => $exception]);
+
+		if($exception != null) {
+			Yii::$app->response->format = Response::FORMAT_JSON;
+			Yii::$app->response->data   = [
+				'code'   => $exception->getCode (),
+				'msg'    => $exception->getMessage (),
+				'status' => $exception->statusCode,
+			];
+			return Yii::$app->response;
 		}
 	}
 }

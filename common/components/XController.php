@@ -12,7 +12,7 @@ use yii\web\Controller;
 
 class XController extends Controller {
 	protected $time = 0;
-	protected $response = ['code'=>1, 'msg'=>''];
+	protected $response = ['code'=>1, 'msg'=>'', 'status'=>200];
 
 	public function init(){
 		parent::init();

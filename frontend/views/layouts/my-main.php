@@ -50,11 +50,17 @@ AppAsset::register ( $this );
             <li <?php if($this->context->id == 'my-order'): ?>class="active"<?php endif; ?>>
                 <a href="<?= Url::toRoute('my-order/index')?>"><i class="fa fa-cubes"></i>订单管理</a>
             </li>
+            <li class="sub <?php if($this->context->id == 'my' and $this->context->action->id != 'index'): ?>open<?php endif; ?>">
+                <a href="javascript:;">
+                    <i class="fa fa-database"></i> 个人信息 <div class="pull-right"><span class="caret"></span></div>
+                </a>
+                <ul class="templatemo-submenu">
+                    <li><a href="<?= Url::toRoute (['my/account']); ?>">账号管理</a></li>
+                    <li><a href="<?= Url::toRoute (['my/address']); ?>">收货地址</a></li>
+                </ul>
+            </li>
 
-			<li <?php if($this->context->id == 'my-account'): ?>class="active"<?php endif; ?>>
-				<a href="<?= Url::toRoute('my-account/index')?>"><i class="fa fa-cubes"></i>账户管理</a>
-			</li>
-			<li>
+            <li>
 				<a href="<?= Url::toRoute(['auth/logout'])?>"><i class="fa fa-sign-out"></i>Sign Out</a>
 			</li>
 		</ul>

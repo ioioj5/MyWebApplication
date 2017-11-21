@@ -57,7 +57,6 @@ $this->registerCssFile ( '@web/css/jquery.toast.min.css', ['depends'=>['frontend
                                     <td colspan="2">
                                         <a href="javascript:void(0);"  data-id="<?= $val->id; ?>">支付</a>
                                         <a href="javascript:void(0);" class="cancelOrder" data-id="<?= $val->id; ?>">取消</a>
-                                        <a href="javascript:void(0);" data-id="<?= $val->id; ?>">关闭</a>
                                         <!--通用功能-->
                                         <a href="javascript:void(0);">备注</a>
                                     </td>

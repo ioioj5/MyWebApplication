@@ -50,6 +50,9 @@ AppAsset::register ( $this );
             <li <?php if($this->context->id == 'tags'): ?>class="active"<?php endif; ?>>
                 <a href="<?= Url::toRoute('tags/index')?>"><i class="fa fa-cubes"></i>标签管理</a>
             </li>
+            <li <?php if($this->context->id == 'ticket'): ?>class="active"<?php endif; ?>>
+                <a href="<?= Url::toRoute('ticket/index')?>"><i class="fa fa-cubes"></i>优惠券管理</a>
+            </li>
             <li <?php if($this->context->id == 'goods'): ?>class="active"<?php endif; ?>>
                 <a href="<?= Url::toRoute('goods/index')?>"><i class="fa fa-cubes"></i>商品管理</a>
             </li>
