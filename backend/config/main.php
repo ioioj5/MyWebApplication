@@ -1,25 +1,33 @@
 <?php
-$params = array_merge(
-    require(__DIR__ . '/../../common/config/params.php'),
-    require(__DIR__ . '/../../common/config/params-local.php'),
-    require(__DIR__ . '/params.php'),
-    require(__DIR__ . '/params-local.php')
+$params = array_merge (
+    require (__DIR__ . '/../../common/config/params.php'),
+    require (__DIR__ . '/../../common/config/params-local.php'),
+    require (__DIR__ . '/params.php'),
+    require (__DIR__ . '/params-local.php')
 );
 
 return [
-    'id' => 'app-backend',
-    'basePath' => dirname(__DIR__),
+    'id'                  => 'app-backend',
+    'basePath'            => dirname (__DIR__),
     'controllerNamespace' => 'backend\controllers',
-	'defaultRoute'        => 'site', // 默认控制器
-    'bootstrap' => ['log'],
-    'modules' => [],
-    'components' => [
-        'user' => [
-            'identityClass' => 'common\models\Admin',
+    'defaultRoute'        => 'site', // 默认控制器
+    'bootstrap'           => ['log'],
+    'modules'             => [],
+    'components'          => [
+        'user'         => [
+            'identityClass'   => 'common\models\Admin',
             'enableAutoLogin' => true,
         ],
         'errorHandler' => [
             'errorAction' => 'error/index',
+        ],
+        'log'          => [
+            'targets' => [
+                [
+                    'class'  => 'yii\log\FileTarget',
+                    'levels' => ['error', 'warning'],
+                ],
+            ],
         ],
         /*
         'urlManager' => [
@@ -30,5 +38,5 @@ return [
         ],
         */
     ],
-    'params' => $params,
+    'params'              => $params,
 ];
